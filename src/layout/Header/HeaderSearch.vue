@@ -8,7 +8,7 @@
     <div
       class="w-10 h-10 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center "
     >
-      <ProfileIcon height="20" width="20" />
+      <ProfileIcon height="20" width="20" class="cursor-pointer"/>
     </div>
   </div>
 </template>

@@ -1,23 +1,18 @@
 <template>
   <Header />
-  <h1>{{ HelloWord }}</h1>
-  
+  <MainText />
 </template>
 
 <script>
-import Header from './layout/Header/Header.vue';
+import Header from "./layout/Header/Header.vue";
+import MainText from "./layout/Main/MainText.vue";
 export default {
   components: {
     Header,
+    MainText,
   },
   name: "App",
-  data() {
-    return {
-      HelloWord: "Hello World",
-    };
-  },
-  methods: {},
+  data() {},
 };
 </script>
-
 <style></style>
