@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto container flex mt-6">
     <h2 class="uppercase text-yellow-500 font-extrabold leading-none text-2xl">
-      {{ popularText }}
+      {{ PopularMovies }}
     </h2>
   </div>
 </template>
@@ -15,12 +15,12 @@ export default {
       PopularTvShows: "Popular TV Shows",
     };
   },
-  computed: {
-    popularText() {
-      if (this.isPopularMovies) return this.PopularMovies;
-      else if (this.isPopularTvShows) return this.PopularTvShows;
-      return "Popular Movies";
-    },
-  },
+//   computed: {
+//     popularText() {
+//       if (this.isPopularMovies) return this.PopularMovies;
+//       else if (this.isPopularTvShows) return this.PopularTvShows;
+//       return "Popular Movies";
+//     },
+//   },
 };
 </script>

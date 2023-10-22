@@ -15,7 +15,6 @@ export default {
     MainContainer,
   },
   name: "App",
-  data() {},
 };
 </script>
 <style></style>
