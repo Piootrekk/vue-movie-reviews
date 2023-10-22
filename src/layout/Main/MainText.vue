@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto container flex mt-6">
-    <h2 class="uppercase text-yellow-500 font-extrabold leading-none">
+    <h2 class="uppercase text-yellow-500 font-extrabold leading-none text-2xl">
       {{ popularText }}
     </h2>
   </div>
