@@ -1,5 +1,5 @@
 <template>
-  <div class="self-center">
+  <div class="self-center text-xl">
     <ul class="flex">
       <li
         class="ml-5 hover:text-gray-400 cursor-pointer"

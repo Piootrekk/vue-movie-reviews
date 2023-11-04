@@ -1,6 +1,7 @@
 <template>
   <div
     class="grid gap-4 justify-between mt-8 mx-auto container mb-7 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3"
+    
   >
     <MainMovie
       v-for="movie in displayedMovies"
@@ -11,7 +12,7 @@
     />
   </div>
   <div v-if="loading" class="justify-between mt-8 mx-auto container">
-    Pobieranie danych...
+    Pobieranie danych... 
   </div>
 </template>
 
