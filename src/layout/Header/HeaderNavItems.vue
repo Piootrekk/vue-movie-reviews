@@ -27,22 +27,22 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "HeaderNavItems",
   setup() {
-    const isPopularMovies = ref(true);
-    const isPopularTvShows = ref(false);
+    const store = useStore();
+    const isPopularMovies = computed(() => store.getters.isPopular.movie);
+    const isPopularTvShows = computed(() => store.getters.isPopular.tvShow);
 
     const setPopularMoviesTrue = () => {
-      isPopularMovies.value = true;
-      isPopularTvShows.value = false;
+      store.commit("setIsPopular", { movie: true, tvShow: false });
     };
 
     const setPopularShowsTrue = () => {
-      isPopularMovies.value = false;
-      isPopularTvShows.value = true;
+      store.commit("setIsPopular", { movie: false, tvShow: true });
     };
 
     return {

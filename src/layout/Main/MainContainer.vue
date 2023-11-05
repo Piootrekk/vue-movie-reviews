@@ -33,8 +33,8 @@ export default {
       loading.value = true;
 
       const apiKey = apiKeys.API_KEY2;
-      const s = "Batman";
-      const pages = 2;
+      const s = "Star Wars";
+      const pages = 1;
       const apiUrl = `http://www.omdbapi.com/?apikey=${apiKey}&s=${s}&page=${pages}`;
 
       try {
@@ -44,6 +44,7 @@ export default {
           console.log("Data fetched and set to local from API:");
           localStorage.setItem("movieData", JSON.stringify(data.Search));
           setLocalStorageTimer();
+          checkLocalStorage();
         } else {
           console.error("Błąd podczas pobierania danych z API OMDB");
         }
