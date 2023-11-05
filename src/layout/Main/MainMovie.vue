@@ -14,8 +14,5 @@ export default {
     year: String,
   },
   name: "MainMovie",
-  data() {
-    return {};
-  },
 };
 </script>

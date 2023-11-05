@@ -1,26 +1,21 @@
 <template>
   <div class="mx-auto container flex mt-6">
     <h2 class="uppercase text-yellow-500 font-extrabold leading-none text-xl items-center flex ">
-      {{ PopularMovies }}
+      {{ popularTitle }}
     </h2>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
   name: "MainText",
-  data() {
+  setup() {
+    const popularTitle = ref("Popular Movies");
     return {
-      PopularMovies: "Popular Movies",
-      PopularTvShows: "Popular TV Shows",
+      popularTitle,
     };
   },
-//   computed: {
-//     popularText() {
-//       if (this.isPopularMovies) return this.PopularMovies;
-//       else if (this.isPopularTvShows) return this.PopularTvShows;
-//       return "Popular Movies";
-//     },
-//   },
 };
 </script>
