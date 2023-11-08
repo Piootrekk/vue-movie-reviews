@@ -3,7 +3,9 @@
     <h2
       class="uppercase text-yellow-500 font-extrabold leading-none text-xl items-center flex"
     >
-      {{ title }}
+      <span v-if="isPopularMovies">Popular Movies</span>
+      <span v-else-if="isPopularTvShows">Popular TV shows</span>
+      <span v-else>Popular</span>
     </h2>
   </div>
 </template>
@@ -17,17 +19,12 @@ export default {
   setup() {
     const store = useStore();
 
-    const title = computed(() => {
-      if (store.getters.isPopular.movie) {
-        return "Popular Movies";
-      } else if (store.getters.isPopular.tvShow) {
-        return "Popular TV shows";
-      }
-      return "Popular";
-    });
+    const isPopularMovies = computed(() => store.getters.isPopular.movie);
+    const isPopularTvShows = computed(() => store.getters.isPopular.tvShow);
 
     return {
-      title,
+      isPopularMovies,
+      isPopularTvShows,
     };
   },
 };

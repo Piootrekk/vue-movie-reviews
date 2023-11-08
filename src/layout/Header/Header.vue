@@ -3,8 +3,8 @@
     class="flex justify-between mt-3 mx-auto container border-b border-gray-600 pb-8 pt-4"
   >
     <div class="flex cursor-pointer">
-      <SvgIcon height="40" width="40" />
-      <h1 class="mb-2 text-3xl ml-1 mt-3 font-extrabold leading-none">
+      <svg-icon type="mdi" :path="path" size="40"></svg-icon>
+      <h1 class="mb-2 text-3xl ml-1 mt-1 font-extrabold leading-none">
         MovieReviewer
       </h1>
     </div>
@@ -14,9 +14,10 @@
 </template>
 
 <script>
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiMovieOpen } from '@mdi/js';
 import HeaderNavItems from "./HeaderNavItems.vue";
 import HeaderSearch from "./HeaderSearch.vue";
-import SvgIcon from "@/components/CameraIcon.vue";
 
 export default {
   components: {
@@ -25,5 +26,12 @@ export default {
     SvgIcon,
   },
   name: "HeaderNavBar",
+  setup()
+  {
+    const path = mdiMovieOpen;
+    return {
+      path,
+    };
+  },
 };
 </script>

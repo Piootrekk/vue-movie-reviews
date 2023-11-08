@@ -1,24 +1,45 @@
 <template>
-  <div class="flex justify-items-center">
-    <input
-      type="text"
-      placeholder="Search"
-      class="border-2 border-gray-700 bg-gray-700 rounded-full px-5 focus:outline-none mr-5 mb-3"
-    />
+  <div class="flex justify-center items-center">
+    <div class="relative">
+      <input
+        type="text"
+        placeholder="Search..."
+        class="h-8 border-2 border-gray-700 bg-gray-700 rounded-full px-3 focus:outline-none text-gray-100 pl-12 mr-6"
+      />
+      <svg-icon
+        type="mdi"
+        :path="pathMagnify"
+        class="absolute inset-y-0 left-1 top-1 w-6 h-6 m-auto pointer-events-none"
+      ></svg-icon>
+    </div>
     <div
-      class="w-10 h-10 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center"
+      class="w-12 h-12 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center"
     >
-      <ProfileIcon height="20" width="20" class="cursor-pointer" />
+      <svg-icon
+        type="mdi"
+        :path="path"
+        class="cursor-pointer"
+        size="30"
+      ></svg-icon>
     </div>
   </div>
 </template>
 
 <script>
-import ProfileIcon from "@/components/ProfileIcon.vue";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiAccount, mdiMagnify } from "@mdi/js";
 export default {
   components: {
-    ProfileIcon,
+    SvgIcon,
   },
   name: "HeaderSearch",
+  setup() {
+    const path = mdiAccount;
+    const pathMagnify = mdiMagnify;
+    return {
+      path,
+      pathMagnify,
+    };
+  },
 };
 </script>
