@@ -19,6 +19,7 @@ import { mdiMovieOpen } from '@mdi/js';
 import HeaderNavItems from "./HeaderNavItems.vue";
 import HeaderSearch from "./HeaderSearch.vue";
 
+
 export default {
   components: {
     HeaderNavItems,
