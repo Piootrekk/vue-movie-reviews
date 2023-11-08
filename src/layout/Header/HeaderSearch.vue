@@ -13,14 +13,9 @@
       ></svg-icon>
     </div>
     <div
-      class="w-12 h-12 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center"
+      class="w-12 h-12 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center hover:bg-gray-600 cursor-pointer"
     >
-      <svg-icon
-        type="mdi"
-        :path="path"
-        class="cursor-pointer"
-        size="30"
-      ></svg-icon>
+      <svg-icon type="mdi" :path="path" size="30"></svg-icon>
     </div>
   </div>
 </template>
