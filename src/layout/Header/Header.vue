@@ -14,11 +14,10 @@
 </template>
 
 <script>
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiMovieOpen } from '@mdi/js';
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiMovieOpen } from "@mdi/js";
 import HeaderNavItems from "./HeaderNavItems.vue";
 import HeaderSearch from "./HeaderSearch.vue";
-
 
 export default {
   components: {
@@ -27,8 +26,7 @@ export default {
     SvgIcon,
   },
   name: "HeaderNavBar",
-  setup()
-  {
+  setup() {
     const path = mdiMovieOpen;
     return {
       path,
