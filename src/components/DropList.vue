@@ -3,13 +3,19 @@
     class="absolute shadow-lg rounded-lg z-10 mt-4 top-8 right-6 bg-gray-900 border border-gray-700"
     v-click-away="onClickaway"
   >
-    <ul>
+    <ul class="text-center self-center">
       <li
-        v-for="(item, index) in items"
+        v-for="(value, name, index) in itemIconMap"
         :key="index"
-        class="py-2 px-4 cursor-pointer hover:bg-gray-800 pt-4"
+        class="px-6 py-4 cursor-pointer hover:bg-gray-800 focus:outline-none rounded-lg flex items-center"
       >
-        {{ item }}
+        <svg-icon
+          v-if="value !== null"
+          type="mdi"
+          :path="value"
+          size="30"
+        ></svg-icon>
+        {{ name }}
       </li>
     </ul>
   </div>
@@ -18,24 +24,36 @@
 <script>
 import { ref, inject } from "vue";
 import { mixin as clickaway } from "vue3-click-away";
+import SvgIcon from "@jamescoyle/vue-icon";
+import {
+  mdiAccountEdit,
+  mdiCog,
+  mdiStar,
+  mdiComment,
+  mdiLogout,
+} from "@mdi/js";
 
 export default {
   name: "DropList",
   mixins: [clickaway],
+  components: {
+    SvgIcon,
+  },
   setup() {
-    const items = ref([
-      "Profile",
-      "Settings",
-      "Favorites",
-      "Comments",
-      "Logout",
-    ]);
+    const itemIconMap = ref({
+      Profile: mdiAccountEdit,
+      Settings: mdiCog,
+      Favorites: mdiStar,
+      Comments: mdiComment,
+      Logout: mdiLogout,
+    });
+
     const isOpen = inject("isOpen");
     const onClickaway = () => {
       if (isOpen.value) isOpen.value = false;
     };
 
-    return { items, onClickaway };
+    return { itemIconMap, onClickaway };
   },
 };
 </script>

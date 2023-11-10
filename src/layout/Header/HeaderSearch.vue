@@ -15,7 +15,7 @@
     </div>
 
     <div
-      class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center hover:bg-gray-600 cursor-pointer relative"
+      class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center :bg-gray-600 cursor-pointer relative border-2 border-gray-700"
       @click="isOpen = !isOpen"
     >
       <svg-icon type="mdi" :path="path" size="30"></svg-icon>
