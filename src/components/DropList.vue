@@ -22,16 +22,9 @@
 </template>
 
 <script>
-import { ref, inject } from "vue";
+import { inject } from "vue";
 import { mixin as clickaway } from "vue3-click-away";
 import SvgIcon from "@jamescoyle/vue-icon";
-import {
-  mdiAccountEdit,
-  mdiCog,
-  mdiStar,
-  mdiComment,
-  mdiLogout,
-} from "@mdi/js";
 
 export default {
   name: "DropList",
@@ -39,21 +32,16 @@ export default {
   components: {
     SvgIcon,
   },
+  props: {
+    itemIconMap: Object,
+  },
   setup() {
-    const itemIconMap = ref({
-      Profile: mdiAccountEdit,
-      Settings: mdiCog,
-      Favorites: mdiStar,
-      Comments: mdiComment,
-      Logout: mdiLogout,
-    });
-
     const isOpen = inject("isOpen");
     const onClickaway = () => {
       if (isOpen.value) isOpen.value = false;
     };
 
-    return { itemIconMap, onClickaway };
+    return { onClickaway };
   },
 };
 </script>

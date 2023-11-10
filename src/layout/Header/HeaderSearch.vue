@@ -19,7 +19,7 @@
       @click="isOpen = !isOpen"
     >
       <svg-icon type="mdi" :path="path" size="30"></svg-icon>
-      <DropList v-if="isOpen" />
+      <DropList :itemIconMap="itemIconMapHeader" v-if="isOpen" />
     </div>
   </div>
 </template>
@@ -29,6 +29,7 @@ import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiAccount, mdiMagnify } from "@mdi/js";
 import { ref, provide } from "vue";
 import DropList from "@/components/DropList.vue";
+import { itemIconMapHeader } from "@/utils/utils.js";
 
 export default {
   components: {
@@ -46,6 +47,7 @@ export default {
       path,
       pathMagnify,
       isOpen,
+      itemIconMapHeader,
     };
   },
 };
