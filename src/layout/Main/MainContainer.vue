@@ -1,6 +1,10 @@
 <template>
+  <div v-if="loading" class="justify-between mt-8 mx-auto container">
+    <LoadingSpin />
+  </div>
   <div
-    class="animate-popping-up grid gap-4 justify-between mt-8 mx-auto container mb-7 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3"
+    v-else
+    class="animate-popping-up grid gap-4 justify-between mt-8 mx-auto container mb-7 lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2"
   >
     <MainMovie
       v-for="movie in displayedMovies"
@@ -10,20 +14,19 @@
       :year="movie.Year"
     />
   </div>
-  <div v-if="loading" class="justify-between mt-8 mx-auto container">
-    Pobieranie danych...
-  </div>
 </template>
 
 <script>
 import { ref, onMounted, watch } from "vue";
 import MainMovie from "./MainMovie.vue";
 import apiKeys from "@/env.js";
+import LoadingSpin from "@/components/LoadingSpin.vue";
 
 export default {
   name: "MainContainer",
   components: {
     MainMovie,
+    LoadingSpin,
   },
   setup() {
     const loading = ref(false);
@@ -31,6 +34,8 @@ export default {
 
     const fetchMovieData = async () => {
       loading.value = true;
+      // wait 5sec FOR test ↓↓↓↓↓
+      // await new Promise((resolve) => setTimeout(resolve, 10000));
 
       const apiKey = apiKeys.API_KEY2;
       const s = "Star Wars";
