@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { onMounted, computed } from "vue";
+import { onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import MainMovie from "./MainMovie.vue";
 import LoadingSpin from "@/components/LoadingSpin.vue";
@@ -32,14 +32,20 @@ export default {
     const store = useStore();
 
     onMounted(() => {
-      // Dispatch the fetchMovieData action from the store
-      store.dispatch('movieApiModule/fetchMovieData');
+      store.dispatch("movieApiModule/fetchMovieData");
     });
 
-    // Use getters from the store
-    const isLoading = computed(() => store.getters['movieApiModule/isLoading']);
-    const displayedMovies = computed(() => store.getters['movieApiModule/displayedMovies']);
+    const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
+    const displayedMovies = computed(
+      () => store.getters["movieApiModule/displayedMovies"]
+    );
 
+    watch(
+      () => store.getters["popularModule/isPopular"],
+      () => {
+        store.dispatch("movieApiModule/fetchMovieData");
+      }
+    );
     return {
       isLoading,
       displayedMovies,
