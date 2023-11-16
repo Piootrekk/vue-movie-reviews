@@ -34,15 +34,17 @@ export default {
   name: "HeaderNavItems",
   setup() {
     const store = useStore();
-    const isPopularMovies = computed(() => store.getters.isPopular.movie);
-    const isPopularTvShows = computed(() => store.getters.isPopular.tvShow);
+
+    // Access getters using the module namespace
+    const isPopularMovies = computed(() => store.getters["popularModule/isPopular"].movie);
+    const isPopularTvShows = computed(() => store.getters["popularModule/isPopular"].tvShow);
 
     const setPopularMoviesTrue = () => {
-      store.commit("setIsPopular", { movie: true, tvShow: false });
+      store.commit("popularModule/setIsPopular", { movie: true, tvShow: false });
     };
 
     const setPopularShowsTrue = () => {
-      store.commit("setIsPopular", { movie: false, tvShow: true });
+      store.commit("popularModule/setIsPopular", { movie: false, tvShow: true });
     };
 
     return {

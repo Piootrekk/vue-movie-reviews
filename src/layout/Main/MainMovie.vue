@@ -7,8 +7,10 @@
       alt="movie"
       class="w-full h-96 object-cover rounded-lg p-1"
     />
-    <span class="text-2xl font-bold text-center mt-3">{{ title }}<br /></span>
-    <span class="font-bold text-center">{{ year }}</span>
+    <span class="text-2xl font-bold text-center mt-3 mx-1"
+      >{{ title }}<br
+    /></span>
+    <span class="font-bold text-center mx-1">{{ year }}</span>
   </div>
 </template>
 

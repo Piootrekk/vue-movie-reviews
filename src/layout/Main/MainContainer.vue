@@ -31,27 +31,28 @@ export default {
   setup() {
     const loading = ref(false);
     const displayedMovies = ref([]);
+    let apiKey = apiKeys.API_KEY2;
 
     const fetchMovieData = async () => {
       loading.value = true;
-      // wait 5sec FOR test ↓↓↓↓↓
+      //  10sec delay FOR test ↓↓↓↓↓
       // await new Promise((resolve) => setTimeout(resolve, 10000));
 
-      const apiKey = apiKeys.API_KEY2;
       const s = "Star Wars";
-      const pages = 1;
+      const pages = 2;
       const apiUrl = `http://www.omdbapi.com/?apikey=${apiKey}&s=${s}&page=${pages}`;
 
       try {
         const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();
-          console.log("Data fetched and set to local from API:");
-          localStorage.setItem("movieData", JSON.stringify(data.Search));
-          setLocalStorageTimer();
-          checkLocalStorage();
+          console.log("Data fetched from API:");
+          displayedMovies.value = data.Search;
         } else {
           console.error("Błąd podczas pobierania danych z API OMDB");
+          apiKey = (apiKey === apiKeys.API_KEY2) ? apiKeys.API_KEY1 : apiKeys.API_KEY3;
+          console.log("Switching to a different API key:", apiKey);
+          await fetchMovieData();
         }
       } catch (error) {
         console.error("Błąd podczas pobierania danych z API OMDB:", error);
@@ -60,34 +61,14 @@ export default {
       }
     };
 
-    const setLocalStorageTimer = () => {
-      setTimeout(() => {
-        localStorage.removeItem("movieData");
-        fetchMovieData();
-      }, 15 * 60 * 1000); // 15 minut na localstorage
-    };
-
-    const checkLocalStorage = () => {
-      const storedData = localStorage.getItem("movieData");
-      console.log("Displayed from localStorage");
-      displayedMovies.value = storedData ? JSON.parse(storedData) : [];
-    };
-
     watch(displayedMovies, (newVal) => {
       if (!newVal.length) {
-        setLocalStorageTimer();
         fetchMovieData();
       }
     });
 
     onMounted(() => {
-      if (!localStorage.getItem("movieData")) {
-        console.log("load to local");
-        fetchMovieData();
-      } else {
-        setLocalStorageTimer();
-        checkLocalStorage();
-      }
+      fetchMovieData();
     });
 
     return {

@@ -14,13 +14,13 @@
       ></svg-icon>
     </div>
 
-    <button
-      class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center :bg-gray-600 cursor-pointer relative border-2 border-gray-700"
+    <div
+      class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center  cursor-pointer relative border-2 border-gray-700"
       @click="isOpen = !isOpen"
     >
-      <svg-icon type="mdi" :path="path" size="30"></svg-icon>
+      <svg-icon type="mdi" :path="path" size="30" ></svg-icon>
       <DropList :itemIconMap="itemIconMapHeader" v-if="isOpen" />
-    </button>
+    </div>
   </div>
 </template>
 

@@ -1,23 +1,8 @@
 import { createStore } from "vuex";
+import popularModule from "./modules/popular";
 
 export default createStore({
-  state: {
-    isPopular : {movie: true, tvShow: false},
+  modules: {
+    popularModule,
   },
-  getters: {
-    isPopular(state) {
-      return state.isPopular;
-    },
-  },
-  mutations: {
-    setIsPopular(state, payload) {
-      state.isPopular = payload;
-    },
-  },
-  actions: {
-    setIsPopular({ commit }, payload) {
-      commit("setIsPopular", payload);
-    },
-  },
-  modules: {},
 });
