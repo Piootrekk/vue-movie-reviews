@@ -25,14 +25,14 @@ export default {
     async fetchMovieData({ commit, dispatch, rootState }) {
       commit("setLoading", true);
 
-      // Wait 3 sec for loading animation {TEST}
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Wait 0.2 sec for loading animation {TEST}
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
-      let s = "Star Wars";
+      let searchTerm = rootState.searchBarModule.searchTerm;
       let pages = 1;
       let type = rootState.popularModule.isPopular.movie ? "movie" : "series";
 
-      const apiUrl = `http://www.omdbapi.com/?apikey=${apiKey}&s=${s}&page=${pages}&type=${type}`;
+      const apiUrl = `http://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&page=${pages}&type=${type}`;
 
       try {
         const response = await fetch(apiUrl);

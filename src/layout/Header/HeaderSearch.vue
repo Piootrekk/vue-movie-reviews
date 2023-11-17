@@ -6,6 +6,7 @@
         type="text"
         placeholder="Search..."
         class="h-8 border-2 border-gray-700 bg-gray-700 rounded-full px-3 focus:outline-none text-gray-100 pl-12 mr-6"
+        v-model="searchTerm"
       />
       <svg-icon
         type="mdi"
@@ -15,10 +16,10 @@
     </div>
 
     <div
-      class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center  cursor-pointer relative border-2 border-gray-700"
+      class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center cursor-pointer relative border-2 border-gray-700"
       @click="isOpen = !isOpen"
     >
-      <svg-icon type="mdi" :path="path" size="30" ></svg-icon>
+      <svg-icon type="mdi" :path="path" size="30"></svg-icon>
       <DropList :itemIconMap="itemIconMapHeader" v-if="isOpen" />
     </div>
   </div>
@@ -27,7 +28,9 @@
 <script>
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiAccount, mdiMagnify } from "@mdi/js";
-import { ref, provide } from "vue";
+import { ref, provide, watch } from "vue";
+import { useStore } from "vuex";
+import _debounce from "lodash/debounce";
 import DropList from "@/components/DropList.vue";
 import { itemIconMapHeader } from "@/utils/utils.js";
 
@@ -38,16 +41,28 @@ export default {
   },
   name: "HeaderSearch",
   setup() {
+    const store = useStore();
     const path = mdiAccount;
     const pathMagnify = mdiMagnify;
     const isOpen = ref(false);
+    const searchTerm = ref("");
 
     provide("isOpen", isOpen);
+
+    const debouncedUpdateSearchTerm = _debounce((newVal) => {
+      store.dispatch("searchBarModule/updateSearchTerm", newVal);
+    }, 800);
+
+    watch(searchTerm, (newVal) => {
+      debouncedUpdateSearchTerm(newVal);
+    });
+
     return {
       path,
       pathMagnify,
       isOpen,
       itemIconMapHeader,
+      searchTerm,
     };
   },
 };

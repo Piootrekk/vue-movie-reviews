@@ -41,11 +41,15 @@ export default {
     );
 
     watch(
-      () => store.getters["popularModule/isPopular"],
+      () => [
+        store.getters["popularModule/isPopular"],
+        store.getters["movieApiModule/getSearchTerm"],
+      ],
       () => {
         store.dispatch("movieApiModule/fetchMovieData");
       }
     );
+
     return {
       isLoading,
       displayedMovies,

@@ -1,21 +1,21 @@
-export default { 
-    namespaced: true,
-    state: {
-        isPopular : {movie: true, tvShow: false},
+export default {
+  namespaced: true,
+  state: {
+    isPopular: { movie: true, tvShow: false },
+  },
+  getters: {
+    isPopular(state) {
+      return state.isPopular;
     },
-    getters: {
-        isPopular(state) {
-            return state.isPopular;
-        },
+  },
+  mutations: {
+    setIsPopular(state, payload) {
+      state.isPopular = payload;
     },
-    mutations: {
-        setIsPopular(state, payload) {
-            state.isPopular = payload;
-        },
+  },
+  actions: {
+    setIsPopular({ commit }, payload) {
+      commit("setIsPopular", payload);
     },
-    actions: {
-        setIsPopular({ commit }, payload) {
-            commit("setIsPopular", payload);
-        },
-    },
-}
+  },
+};
