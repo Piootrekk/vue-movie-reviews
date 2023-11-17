@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { onMounted, computed, watch } from "vue";
+import { computed, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import MainMovie from "./MainMovie.vue";
 import LoadingSpin from "@/components/LoadingSpin.vue";
@@ -31,22 +31,38 @@ export default {
   setup() {
     const store = useStore();
 
-    onMounted(() => {
-      store.dispatch("movieApiModule/fetchMovieData");
-    });
-
     const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
     const displayedMovies = computed(
       () => store.getters["movieApiModule/displayedMovies"]
     );
 
+    onMounted(() => {
+      store.dispatch("localStorageModule/initializeLocalStorage");
+      const storedData = store.getters["localStorageModule/getmovieData"];
+      if (storedData) {
+        store.commit("movieApiModule/setDisplayedMovies", storedData);
+      }
+    });
+
     watch(
       () => [
         store.getters["popularModule/isPopular"],
-        store.getters["movieApiModule/getSearchTerm"],
+        store.getters["searchBarModule/getSearchTerm"],
       ],
       () => {
         store.dispatch("movieApiModule/fetchMovieData");
+      }
+    );
+
+    watch(
+      () => displayedMovies.value,
+      (newDisplayedMovies) => {
+        if (newDisplayedMovies) {
+          store.dispatch(
+            "localStorageModule/updatemovieData",
+            newDisplayedMovies
+          );
+        }
       }
     );
 

@@ -1,3 +1,4 @@
+// popularModule.js
 export default {
   namespaced: true,
   state: {
