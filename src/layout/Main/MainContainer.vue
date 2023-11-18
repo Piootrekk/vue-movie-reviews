@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoading" class=" mt-8 mx-auto container">
+  <div v-if="isLoading" class="mt-8 mx-auto container">
     <LoadingSpin />
   </div>
   <div v-else>
@@ -13,13 +13,16 @@
         :link="movie.Poster"
         :title="movie.Title"
         :year="movie.Year"
+        @my-event="onFollow"
       />
     </div>
     <div v-else class="justify-between mt-8 mx-auto container">
-      <h2 class="text-red-500 font-extrabold leading-none text-xl text-center flex">
+      <h2
+        class="text-red-500 font-extrabold leading-none text-xl text-center flex"
+      >
         No results found
       </h2>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -37,6 +40,10 @@ export default {
   },
   setup() {
     const store = useStore();
+
+    const onFollow = (test) => {
+      test.value = !test.value;
+    };
 
     const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
     const displayedMovies = computed(
@@ -76,6 +83,7 @@ export default {
     return {
       isLoading,
       displayedMovies,
+      onFollow,
     };
   },
 };

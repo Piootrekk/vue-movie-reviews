@@ -10,11 +10,20 @@
     <span class="text-2xl font-bold text-center mt-3 mx-1"
       >{{ title }}<br
     /></span>
-    <span class="font-bold text-center mx-1">{{ year }}</span>
+    <span class="font-bold text-center mx-1">{{ year }}</span> <br />
+    <button
+      @click="ButtonClick"
+      class="w-24 mt-auto px-2 py-2 text-white rounded-full focus:outline-none"
+      :class = "follow ? 'bg-blue-500' : 'bg-red-500'"
+    >
+      {{ follow ? "Follow" : "Unfollow" }}
+      
+    </button>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   props: {
     link: String,
@@ -22,5 +31,12 @@ export default {
     year: String,
   },
   name: "MainMovie",
+  setup(props, context) {
+    let follow = ref(true);
+    const ButtonClick = () => {
+      context.emit("my-event", follow);
+    };
+    return { follow, ButtonClick };
+  },
 };
 </script>
