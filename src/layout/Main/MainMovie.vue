@@ -38,5 +38,6 @@ export default {
     };
     return { follow, ButtonClick };
   },
+  emits: ["my-event"]
 };
 </script>
