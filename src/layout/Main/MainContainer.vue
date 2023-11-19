@@ -51,7 +51,9 @@ export default {
     );
 
     onMounted(() => {
-      store.dispatch("localStorageModule/initializeLocalStorage");
+      store.dispatch("localStorageModule/initializeLocalStorage", {
+        key: "movieData",
+      });
       const storedData = store.getters["localStorageModule/getmovieData"];
       if (storedData) {
         store.commit("movieApiModule/setDisplayedMovies", storedData);
@@ -72,10 +74,10 @@ export default {
       () => displayedMovies.value,
       (newDisplayedMovies) => {
         if (newDisplayedMovies) {
-          store.dispatch(
-            "localStorageModule/updatemovieData",
-            newDisplayedMovies
-          );
+          store.dispatch("localStorageModule/updatemovieData", {
+            newData: newDisplayedMovies,
+            key: "movieData",
+          });
         }
       }
     );
