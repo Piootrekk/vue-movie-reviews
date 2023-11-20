@@ -1,3 +1,4 @@
+<!-- 
 <template>
   <Header />
   <MainText />
@@ -14,6 +15,21 @@ export default {
     Header,
     MainText,
     MainContainer,
+  },
+  name: "App",
+};
+</script> -->
+
+<template>
+  <RegisterPage />
+</template>
+
+<script>
+import RegisterPage from "./views/RegisterPage.vue";
+
+export default {
+  components: {
+    RegisterPage,
   },
   name: "App",
 };

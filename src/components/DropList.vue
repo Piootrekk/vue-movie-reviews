@@ -10,6 +10,7 @@
         class="px-6 py-4 cursor-pointer hover:bg-gray-800 focus:outline-none rounded-lg flex items-center"
       >
         <svg-icon
+          class="mr-2"
           v-if="value !== null"
           type="mdi"
           :path="value"

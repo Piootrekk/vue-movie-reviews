@@ -41,8 +41,8 @@ export default {
   setup() {
     const store = useStore();
 
-    const onFollow = (test) => {
-      test.value = !test.value;
+    const onFollow = (flw) => {
+      flw.value = !flw.value;
     };
 
     const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);

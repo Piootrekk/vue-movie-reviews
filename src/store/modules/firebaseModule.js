@@ -1,5 +1,6 @@
 // firebaseModule.js
 import auth from "@/firebase/config.js";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default {
   namespaced: true,
@@ -10,22 +11,24 @@ export default {
     getUser: (state) => state.user,
   },
   mutations: {
-    updateUser: (state, newUser) => {
-      state.user = newUser;
+    setUser: (state, user) => {
+      state.user = user;
     },
   },
   actions: {
-    initializeFirebase: ({ commit }) => {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          commit("updateUser", user);
-        } else {
-          commit("updateUser", null);
-        }
-      });
-    },
-    updateUser: ({ commit }, newUser) => {
-      commit("updateUser", newUser);
+    createUser: async ({ commit }, { email, password }) => {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        commit("setUser", user);
+        console.log("user created:", user);
+      } catch (error) {
+        console.log("error creating user:", error);
+      }
     },
   },
 };

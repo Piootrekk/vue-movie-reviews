@@ -20,7 +20,7 @@
       @click="isOpen = !isOpen"
     >
       <svg-icon type="mdi" :path="path" size="30"></svg-icon>
-      <DropList :itemIconMap="itemIconMapHeader" v-if="isOpen" />
+      <DropList :itemIconMap="itemIconMapHeaderNotLogged" v-if="isOpen" />
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ import { ref, provide, watch } from "vue";
 import { useStore } from "vuex";
 import _debounce from "lodash/debounce";
 import DropList from "@/components/DropList.vue";
-import { itemIconMapHeader } from "@/utils/utils.js";
+import { itemIconMapHeaderNotLogged } from "@/utils/utils.js";
 
 export default {
   components: {
@@ -61,7 +61,7 @@ export default {
       path,
       pathMagnify,
       isOpen,
-      itemIconMapHeader,
+      itemIconMapHeaderNotLogged,
       searchTerm,
     };
   },
