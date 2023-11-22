@@ -4,8 +4,8 @@
       @submit.prevent="register"
       class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16"
     >
-      <h2 class="text-4xl font-semibold mb-6 text-center">Registration</h2>
-      <InputCustom
+      <h2 class="text-4xl font-semibold mb-6 text-center">Register</h2>
+      <CustomInput
         label="Email"
         v-model="email"
         errorMessage="Email is not valid"
@@ -13,7 +13,7 @@
         autocomplete="email"
         @handleInput="validateEmail"
       />
-      <InputCustom
+      <CustomInput
         label="Password"
         v-model="password"
         errorMessage="Password min 6 characters"
@@ -21,7 +21,7 @@
         autocomplete="password"
         @handleInput="validatePassword"
       />
-      <InputCustom
+      <CustomInput
         label="Confirm password"
         v-model="passwordConfirmation"
         errorMessage="Passwords do not match"
@@ -30,36 +30,27 @@
         @handleInput="validatePasswordsMatch"
       />
 
-      <button
-        class="w-full mt-8 p-2 rounded"
-        type="submit"
-        :disabled="isRegisterButtonDisabled || isLoading"
-        :class="{
-          'bg-blue-500 text-white': !isRegisterButtonDisabled && !isLoading,
-          'bg-gray-300 text-gray-500 cursor-not-allowed':
-            isRegisterButtonDisabled || isLoading,
-        }"
-      >
-        <template v-if="isLoading">
-          <LoadingSpinButton label="Processing..." />
-        </template>
-        <template v-else> Register </template>
-      </button>
+      <CustomButton
+        label="Register"
+        :isButtonDisabled="isRegisterButtonDisabled"
+        :isLoading="isLoading"
+        :handleClick="register"
+      />
     </form>
   </div>
 </template>
 
 <script>
 import { useStore } from "vuex";
-import InputCustom from "@/components/InputCustom.vue";
-import LoadingSpinButton from "@/components/LoadingSpinButton.vue";
+import CustomInput from "@/components/CustomInput.vue";
+import CustomButton from "@/components/CustomButton.vue";
 import { ref, computed } from "vue";
 
 export default {
   name: "RegisterPage",
   components: {
-    InputCustom,
-    LoadingSpinButton,
+    CustomInput,
+    CustomButton,
   },
   setup() {
     const store = useStore();
