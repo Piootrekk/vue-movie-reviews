@@ -5,61 +5,36 @@
       class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16"
     >
       <h2 class="text-4xl font-semibold mb-6 text-center">Registration</h2>
+      <InputCustom
+        label="Email"
+        v-model="email"
+        errorMessage="Email is not valid"
+        type="text"
+        autocomplete="email"
+        @handleInput="validateEmail"
+      />
+      <InputCustom
+        label="Password"
+        v-model="password"
+        errorMessage="Password min 6 characters"
+        type="password"
+        autocomplete="password"
+        @handleInput="validatePassword"
+      />
+      <InputCustom
+        label="Confirm password"
+        v-model="passwordConfirmation"
+        errorMessage="Passwords do not match"
+        type="password"
+        autocomplete="password"
+        @handleInput="validatePasswordsMatch"
+      />
 
-      <div class="mb-8">
-        <label for="email" class="block text-gray-700 text-sm font-bold mb-2"
-          >E-mail:</label
-        >
-        <input
-          v-model="email"
-          @input="validateEmail"
-          type="email"
-          id="email"
-          name="email"
-          class="w-full p-2 border rounded"
-        />
-        <p v-if="!isEmailValid" class="text-red-500 text-xs mt-1 absolute">
-          Incorrect mail
-        </p>
-      </div>
-
-      <div class="mb-8">
-        <label for="password" class="block text-gray-700 text-sm font-bold mb-2"
-          >Password:</label
-        >
-        <input
-          v-model="password"
-          @input="validatePassword"
-          type="password"
-          id="password"
-          name="password"
-          class="w-full p-2 border rounded"
-        />
-        <p v-if="!isPasswordValid" class="text-red-500 text-xs mt-1 absolute">
-          Password 6 characters long
-        </p>
-      </div>
-
-      <div class="mb-8">
-        <label
-          for="passwordConfirmation"
-          class="block text-gray-700 text-sm font-bold mb-2"
-          >Repeat Password:</label
-        >
-        <input
-          v-model="passwordConfirmation"
-          @input="validatePasswordsMatch"
-          type="password"
-          id="passwordConfirmation"
-          name="passwordConfirmation"
-          class="w-full p-2 border rounded"
-        />
-        <p v-if="!doPasswordsMatch" class="text-red-500 text-xs mt-1 absolute">
-          Password does not match
-        </p>
-      </div>
-
-      <button type="submit" class="bg-blue-500 text-white p-2 rounded">
+      <button
+        type="submit"
+        :disabled="isRegisterButtonDisabled"
+        class="bg-blue-500 text-white p-2 rounded"
+      >
         Register
       </button>
     </form>
@@ -67,52 +42,52 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { useStore } from "vuex";
+import InputCustom from "@/components/InputCustom.vue";
+import { ref, computed } from "vue";
 
 export default {
   name: "RegisterPage",
+  components: {
+    InputCustom,
+  },
   setup() {
     const store = useStore();
 
     const email = ref("");
     const password = ref("");
     const passwordConfirmation = ref("");
-    const isEmailValid = ref(true);
-    const isPasswordValid = ref(true);
-    const doPasswordsMatch = ref(true);
 
-    const validateEmail = () => {
-      isEmailValid.value = /\S+@\S+\.\S+/.test(email.value);
+    const AllValidations = ref({});
+
+    const validateEmail = (isValid) => {
+      isValid.value = /\S+@\S+\.\S+/.test(email.value);
+      AllValidations.value.email = isValid.value;
     };
 
-    const validatePassword = () => {
-      isPasswordValid.value = password.value.length >= 6;
+    const validatePassword = (isValid) => {
+      isValid.value = password.value.length >= 6;
+      AllValidations.value.password = isValid.value;
     };
 
-    const validatePasswordsMatch = () => {
-      doPasswordsMatch.value = password.value === passwordConfirmation.value;
+    const validatePasswordsMatch = (isValid) => {
+      isValid.value = password.value === passwordConfirmation.value;
+      AllValidations.value.passwordConfirmation = isValid.value;
     };
+
+    const isRegisterButtonDisabled = computed(() => {
+      if (Object.keys(AllValidations.value).length === 0) return true;
+      return Object.values(AllValidations.value).some((isValid) => !isValid);
+    });
 
     const register = async () => {
-      validateEmail();
-      validatePassword();
-      validatePasswordsMatch();
-
-      if (
-        isEmailValid.value &&
-        isPasswordValid.value &&
-        doPasswordsMatch.value
-      ) {
-        try {
-          const user = await store.dispatch("firebaseModule/createUser", {
-            email: email.value,
-            password: password.value,
-          });
-          console.log("Rejestracja udana!", user);
-        } catch (error) {
-          console.error("Błąd rejestracji:", error);
-        }
+      try {
+        await store.dispatch("firebaseModule/createUser", {
+          email: email.value,
+          password: password.value,
+        });
+      } catch (error) {
+        console.error("Błąd rejestracji:", error);
       }
     };
 
@@ -120,13 +95,11 @@ export default {
       email,
       password,
       passwordConfirmation,
-      isEmailValid,
-      isPasswordValid,
-      doPasswordsMatch,
       validateEmail,
       validatePassword,
       validatePasswordsMatch,
       register,
+      isRegisterButtonDisabled,
     };
   },
 };

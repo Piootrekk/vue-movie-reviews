@@ -27,7 +27,7 @@ export default {
         commit("setUser", user);
         console.log("user created:", user);
       } catch (error) {
-        console.log("error creating user:", error);
+        console.error("error creating user:", error);
       }
     },
   },
