@@ -32,5 +32,6 @@ export default {
       localStorage.setItem(key, JSON.stringify(item));
       commit("updatemovieData", { newData: data, key });
     },
+    
   },
 };

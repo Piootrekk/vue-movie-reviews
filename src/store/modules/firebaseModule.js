@@ -1,6 +1,9 @@
 // firebaseModule.js
 import auth from "@/firebase/config.js";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 export default {
   namespaced: true,
@@ -17,17 +20,27 @@ export default {
   },
   actions: {
     createUser: async ({ commit }, { email, password }) => {
-      try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (userCredential) {
         const user = userCredential.user;
         commit("setUser", user);
         console.log("user created:", user);
-      } catch (error) {
-        console.error("error creating user:", error);
+      }
+    },
+    login: async ({ commit }, { email, password }) => {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      if (user) {
+        commit("setUser", user);
+        console.log("user logged in:", user);
       }
     },
   },

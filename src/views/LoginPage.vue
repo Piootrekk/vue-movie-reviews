@@ -20,11 +20,7 @@
         autocomplete="password"
       />
 
-      <CustomButton
-        label="Login"
-        :isLoading="isLoading"
-        :handleClick="login"
-      />
+      <CustomButton label="Login" :isLoading="isLoading" :handleClick="login" />
     </form>
   </div>
 </template>
@@ -48,18 +44,17 @@ export default {
     const password = ref("");
     const isLoading = ref(false);
 
-
     const login = async () => {
       try {
         isLoading.value = true;
-        // Wait promise for 10sec
-        await new Promise((resolve) => setTimeout(resolve, 10000));
-        await store.dispatch("authModule/login", {
+        // Wait promise for 5sec
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await store.dispatch("firebaseModule/login", {
           email: email.value,
           password: password.value,
         });
       } catch (error) {
-        console.error("Login error:", error);
+        console.error(error.message);
       } finally {
         isLoading.value = false;
       }

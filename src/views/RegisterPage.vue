@@ -88,14 +88,14 @@ export default {
     const register = async () => {
       try {
         isLoading.value = true;
-        // Wait promise for 10sec
-        await new Promise((resolve) => setTimeout(resolve, 10000));
+        // Wait promise for 5sec
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         await store.dispatch("firebaseModule/createUser", {
           email: email.value,
           password: password.value,
         });
       } catch (error) {
-        console.error("Błąd rejestracji:", error);
+        console.error(error.message);
       } finally {
         isLoading.value = false;
       }
