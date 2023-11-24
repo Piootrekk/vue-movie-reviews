@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, defineEmits } from "vue";
+import { defineProps, defineEmits, ref } from "vue";
 
 defineProps({
   label: {
@@ -42,6 +42,7 @@ defineProps({
 });
 
 const isValid = ref(true);
+
 const emit = defineEmits(["update:modelValue", "handleInput"]);
 
 const handleInput = (e) => {

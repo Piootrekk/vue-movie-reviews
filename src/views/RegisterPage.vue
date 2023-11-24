@@ -36,6 +36,7 @@
         :isLoading="isLoading"
         :handleClick="register"
       />
+      <HomeAboutLinks />
     </form>
   </div>
 </template>
@@ -44,6 +45,7 @@
 import { useStore } from "vuex";
 import CustomInput from "@/components/CustomInput.vue";
 import CustomButton from "@/components/CustomButton.vue";
+import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
 import { ref, computed } from "vue";
 
 export default {
@@ -51,6 +53,7 @@ export default {
   components: {
     CustomInput,
     CustomButton,
+    HomeAboutLinks,
   },
   setup() {
     const store = useStore();

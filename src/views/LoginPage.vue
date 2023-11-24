@@ -19,8 +19,8 @@
         type="password"
         autocomplete="password"
       />
-
       <CustomButton label="Login" :isLoading="isLoading" :handleClick="login" />
+      <HomeAboutLinks />
     </form>
   </div>
 </template>
@@ -29,6 +29,7 @@
 import { useStore } from "vuex";
 import CustomInput from "@/components/CustomInput.vue";
 import CustomButton from "@/components/CustomButton.vue";
+import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
 import { ref } from "vue";
 
 export default {
@@ -36,6 +37,7 @@ export default {
   components: {
     CustomInput,
     CustomButton,
+    HomeAboutLinks,
   },
   setup() {
     const store = useStore();
