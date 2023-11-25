@@ -10,7 +10,6 @@ export default {
   mutations: {
     updateSearchTerm: (state, searchTerm) => {
       state.searchTerm = searchTerm;
-      console.log("searchTerm updated to:", searchTerm);
     },
   },
   actions: {

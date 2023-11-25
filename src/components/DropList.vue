@@ -4,9 +4,10 @@
     v-click-away="onClickaway"
   >
     <ul class="text-center self-center">
-      <li
+      <router-link
         v-for="(value, name, index) in itemIconMap"
         :key="index"
+        :to="{ name: name}"
         class="px-6 py-4 cursor-pointer hover:bg-gray-800 focus:outline-none rounded-lg flex items-center"
       >
         <svg-icon
@@ -17,7 +18,7 @@
           size="30"
         ></svg-icon>
         {{ name }}
-      </li>
+      </router-link>
     </ul>
   </div>
 </template>
