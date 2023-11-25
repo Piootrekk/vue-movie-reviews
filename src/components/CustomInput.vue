@@ -7,7 +7,7 @@
         :value="modelValue"
         @input="handleInput"
         v-bind="$attrs"
-        class="pl-4 rounded peer h-10 border-b-2 bg-gray-700 border-gray-400 text-gray-100 placeholder-transparent focus:outline-none focus:border-gray-400 focus:border-b-2 transition-colors"
+        class="pl-4 rounded peer h-10 border-b-2 bg-gray-700 border-gray-400 text-gray-100 placeholder-transparent focus:outline-none focus:border-gray-400 focus:border-b-2 transition-colors w-52"
         placeholder=" "
       />
       <label

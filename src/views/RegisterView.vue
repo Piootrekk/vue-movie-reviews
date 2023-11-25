@@ -29,7 +29,9 @@
         autocomplete="password"
         @handleInput="validatePasswordsMatch"
       />
-
+      <p v-if="errorMessage" class="text-red-500 text-xs w-48 mx-2">
+        {{ errorMessage }}
+      </p>
       <CustomButton
         label="Register"
         :isButtonDisabled="isRegisterButtonDisabled"
@@ -62,6 +64,7 @@ export default {
     const password = ref("");
     const passwordConfirmation = ref("");
     const isLoading = ref(false);
+    const errorMessage = ref("");
 
     const AllValidations = ref({
       email: false,
@@ -99,6 +102,7 @@ export default {
         });
       } catch (error) {
         console.error(error.message);
+        errorMessage.value = error.message;
       } finally {
         isLoading.value = false;
       }
@@ -114,6 +118,7 @@ export default {
       register,
       isRegisterButtonDisabled,
       isLoading,
+      errorMessage,
     };
   },
 };

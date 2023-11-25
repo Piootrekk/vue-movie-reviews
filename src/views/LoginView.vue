@@ -2,23 +2,24 @@
   <div class="flex justify-center items-center h-screen">
     <form
       @submit.prevent="login"
-      class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16"
+      class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16 relative"
     >
       <h2 class="text-4xl font-semibold mb-6 text-center">Login</h2>
       <CustomInput
         label="Email"
         v-model="email"
-        errorMessage="Email is not valid"
         type="text"
         autocomplete="email"
       />
       <CustomInput
         label="Password"
         v-model="password"
-        errorMessage="Password min 6 characters"
         type="password"
         autocomplete="password"
       />
+      <p v-if="errorMessage" class="text-red-500 text-xs w-48 mx-2">
+        {{ errorMessage }}
+      </p>
       <CustomButton label="Login" :isLoading="isLoading" :handleClick="login" />
       <HomeAboutLinks />
     </form>
@@ -45,7 +46,7 @@ export default {
     const email = ref("");
     const password = ref("");
     const isLoading = ref(false);
-
+    const errorMessage = ref("");
     const login = async () => {
       try {
         isLoading.value = true;
@@ -56,7 +57,7 @@ export default {
           password: password.value,
         });
       } catch (error) {
-        console.error(error.message);
+        errorMessage.value = error.message;
       } finally {
         isLoading.value = false;
       }
@@ -67,6 +68,7 @@ export default {
       password,
       login,
       isLoading,
+      errorMessage,
     };
   },
 };
