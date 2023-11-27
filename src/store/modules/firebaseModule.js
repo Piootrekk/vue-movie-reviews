@@ -3,6 +3,7 @@ import auth from "@/firebase/config.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 export default {
@@ -42,6 +43,11 @@ export default {
         commit("setUser", user);
         console.log("user logged in:", user);
       }
+    },
+    logout: async ({ commit }) => {
+      await signOut(auth);
+      commit("setUser", null);
+      console.log("user logged out");
     },
   },
 };

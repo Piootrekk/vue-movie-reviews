@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import store from "../store";
 
 const routes = [
   {
@@ -11,7 +12,6 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () => import("../views/LoginView.vue"),
-    
   },
   {
     path: "/register",
@@ -23,6 +23,21 @@ const routes = [
     name: "About",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/logout",
+    // JAKIEŚ POJEBANE TO CHUJ WIE CZY DZIAŁA
+    beforeEnter: (to, from, next) => {
+      store
+        .dispatch("firebaseModule/logout")
+        .then(() => {
+          next("/");
+        })
+        .catch((error) => {
+          console.error("Logout failed:", error);
+          next(false);
+        });
+    },
   },
 ];
 
