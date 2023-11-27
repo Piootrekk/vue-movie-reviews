@@ -21,7 +21,9 @@
       >
         TV shows
       </li>
-      <li class="ml-5 hover:text-gray-400 cursor-pointer">About</li>
+      <router-link to="/about" class="ml-5 hover:text-gray-400 cursor-pointer"
+        >About</router-link
+      >
     </ul>
   </div>
 </template>

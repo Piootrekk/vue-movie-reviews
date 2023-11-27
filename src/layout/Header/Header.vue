@@ -27,7 +27,7 @@ export default {
     HeaderSearch,
     SvgIcon,
   },
-  name: "HeaderNavBar",
+  name: "HeaderMain",
   setup() {
     const path = mdiMovieOpen;
     return {
