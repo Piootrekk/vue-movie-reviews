@@ -30,6 +30,7 @@ export default {
   name: "HeaderMain",
   setup() {
     const path = mdiMovieOpen;
+   
     return {
       path,
     };

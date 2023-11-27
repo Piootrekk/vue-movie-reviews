@@ -1,10 +1,16 @@
 <template>
   <div>
-    <BodyWrapper
-      :isLoading="isLoading"
-      :displayedMovies="displayedMovies"
-      @my-event="onFollow"
+    <div
+      v-if="displayedMovies === undefined || displayedMovies.length === 0"
+      class="justify-between mt-8 mx-auto container"
     >
+      <h2
+        class="text-red-500 font-extrabold leading-none text-xl text-center flex"
+      >
+        No results found
+      </h2>
+    </div>
+    <BodyWrapper v-else :isLoading="isLoading">
       <template v-slot:main-movie>
         <MainMovie
           v-for="movie in displayedMovies"
