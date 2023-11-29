@@ -21,13 +21,12 @@ const routes = [
   {
     path: "/about",
     name: "About",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    component: () => import("../views/AboutView.vue"),
   },
   {
     path: "/logout",
     name: "Logout",
-    // JAKIEŚ POJEBANE TO CHUJ WIE CZY DZIAŁA
+    // JAKIEŚ POJEBANE TO CHUJ ALE DZIAŁA XD
     beforeEnter: (to, from, next) => {
       store
         .dispatch("firebaseModule/logout")
@@ -39,11 +38,6 @@ const routes = [
           next(false);
         });
     },
-  },
-  {
-    path: "/tests",
-    name: ["Profile", "Settings", "Favorites", "Comments"],
-    component: () => import("../views/DropListViews/Profile.vue"),
   },
 
   // OSTATNI ROUTE MUSI BYĆ ZAWSZE

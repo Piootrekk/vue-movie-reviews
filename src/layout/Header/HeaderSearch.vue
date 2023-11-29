@@ -50,8 +50,8 @@ export default {
     const pathMagnify = mdiMagnify;
     const isOpen = ref(false);
     const searchTerm = ref("");
-    const isUserAuthenticated = ref(
-      store.getters["firebaseModule/isAuthenticated"]
+    const isUserAuthenticated = computed(
+      () => store.getters["firebaseModule/isAuthenticated"]
     );
     const itemIconMapper = ref(headerNotLoggedItems);
 

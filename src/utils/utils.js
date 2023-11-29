@@ -39,8 +39,8 @@ const handleLogin = (router) => {
   console.log("Login clicked");
 };
 
-const handleRegister = () => {
-  // Kod obsługi dla rejestracji
+const handleRegister = (router) => {
+  router.push("/register");
   console.log("Register clicked");
 };
 
@@ -54,5 +54,9 @@ export const headerLoggedItems = [
 
 export const headerNotLoggedItems = [
   { name: "Login", icon: mdiLogin, action: () => handleLogin(router) },
-  { name: "Register", icon: mdiAccountPlus, action: handleRegister },
+  {
+    name: "Register",
+    icon: mdiAccountPlus,
+    action: () => handleRegister(router),
+  },
 ];
