@@ -19,8 +19,12 @@ export default {
   setup() {
     const store = useStore();
 
-    const isPopularMovies = computed(() => store.getters["popularModule/isPopular"].movie);
-    const isPopularTvShows = computed(() => store.getters["popularModule/isPopular"].tvShow);
+    const isPopularMovies = computed(
+      () => store.getters["popularModule/isPopular"].movie
+    );
+    const isPopularTvShows = computed(
+      () => store.getters["popularModule/isPopular"].tvShow
+    );
 
     return {
       isPopularMovies,
@@ -29,4 +33,3 @@ export default {
   },
 };
 </script>
-

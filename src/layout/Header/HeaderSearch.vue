@@ -36,10 +36,7 @@ import { ref, watch, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 import _debounce from "lodash/debounce";
 import DropList from "@/components/DropList.vue";
-import {
-  itemIconMapHeaderNotLogged,
-  itemIconMapHeaderLogged,
-} from "@/utils/utils.js";
+import { headerLoggedItems, headerNotLoggedItems } from "@/utils/utils.js";
 
 export default {
   components: {
@@ -56,13 +53,13 @@ export default {
     const isUserAuthenticated = ref(
       store.getters["firebaseModule/isAuthenticated"]
     );
-    const itemIconMapper = ref(itemIconMapHeaderNotLogged);
+    const itemIconMapper = ref(headerNotLoggedItems);
 
     watchEffect(() => {
-    itemIconMapper.value = isUserAuthenticated.value
-      ? itemIconMapHeaderLogged
-      : itemIconMapHeaderNotLogged;
-  });
+      itemIconMapper.value = isUserAuthenticated.value
+        ? headerLoggedItems
+        : headerNotLoggedItems;
+    });
 
     const debouncedUpdateSearchTerm = _debounce((newVal) => {
       store.dispatch("searchBarModule/updateSearchTerm", newVal);

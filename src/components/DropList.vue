@@ -4,21 +4,21 @@
     v-click-away="onClickaway"
   >
     <ul class="text-center self-center">
-      <router-link
-        v-for="(value, name, index) in itemIconMap"
+      <li
+        v-for="(item, index) in itemIconMap"
         :key="index"
-        :to="{ name: 'NotFound' }"
+        @click="handleClickedItem(item)"
         class="px-6 py-4 cursor-pointer hover:bg-gray-800 focus:outline-none rounded-lg flex items-center"
       >
         <svg-icon
           class="mr-2"
-          v-if="value !== null"
+          v-if="item.icon !== null"
           type="mdi"
-          :path="value"
+          :path="item.icon"
           size="30"
         ></svg-icon>
-        {{ name }}
-      </router-link>
+        {{ item.name }}
+      </li>
     </ul>
   </div>
 </template>
@@ -34,14 +34,17 @@ export default {
     SvgIcon,
   },
   props: {
-    itemIconMap: Object,
+    itemIconMap: Array,
   },
   setup(props, { emit }) {
     const onClickaway = () => {
       emit("close");
     };
+    const handleClickedItem = (item) => {
+      item.action();
+    };
 
-    return { onClickaway };
+    return { onClickaway, handleClickedItem };
   },
 };
 </script>

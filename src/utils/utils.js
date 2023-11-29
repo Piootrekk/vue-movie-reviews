@@ -1,3 +1,4 @@
+import router from "@/router";
 import {
   mdiAccountEdit,
   mdiCog,
@@ -5,18 +6,53 @@ import {
   mdiComment,
   mdiLogout,
   mdiAccountPlus,
-  mdiLogin
+  mdiLogin,
 } from "@mdi/js";
 
-export const itemIconMapHeaderLogged = {
-  Profile: mdiAccountEdit,
-  Settings: mdiCog,
-  Favorites: mdiStar,
-  Comments: mdiComment,
-  Logout: mdiLogout,
+const handleProfile = () => {
+  // Kod obsługi dla profilu
+  console.log("Profile clicked");
 };
 
-export const itemIconMapHeaderNotLogged = {
-  Login: mdiLogin,
-  Register: mdiAccountPlus,
+const handleSettings = () => {
+  // Kod obsługi dla ustawień
+  console.log("Settings clicked");
 };
+
+const handleFavorites = () => {
+  // Kod obsługi dla ulubionych
+  console.log("Favorites clicked");
+};
+
+const handleComments = () => {
+  // Kod obsługi dla komentarzy
+  console.log("Comments clicked");
+};
+
+const handleLogout = (router) => {
+  router.push("/logout");
+  console.log("Logout clicked");
+};
+
+const handleLogin = (router) => {
+  router.push("/login");
+  console.log("Login clicked");
+};
+
+const handleRegister = () => {
+  // Kod obsługi dla rejestracji
+  console.log("Register clicked");
+};
+
+export const headerLoggedItems = [
+  { name: "Profile", icon: mdiAccountEdit, action: handleProfile },
+  { name: "Settings", icon: mdiCog, action: handleSettings },
+  { name: "Favorites", icon: mdiStar, action: handleFavorites },
+  { name: "Comments", icon: mdiComment, action: handleComments },
+  { name: "Logout", icon: mdiLogout, action: () => handleLogout(router) },
+];
+
+export const headerNotLoggedItems = [
+  { name: "Login", icon: mdiLogin, action: () => handleLogin(router) },
+  { name: "Register", icon: mdiAccountPlus, action: handleRegister },
+];
