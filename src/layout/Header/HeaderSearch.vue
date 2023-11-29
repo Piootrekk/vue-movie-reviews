@@ -20,7 +20,11 @@
       @click="isOpen = !isOpen"
     >
       <svg-icon type="mdi" :path="path" size="30"></svg-icon>
-      <DropList :itemIconMap="itemIconMapHeaderNotLogged" v-if="isOpen" />
+      <DropList
+        :itemIconMap="itemIconMapper"
+        v-if="isOpen"
+        @close="handleClose"
+      />
     </div>
   </div>
 </template>
@@ -28,11 +32,14 @@
 <script>
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiAccount, mdiMagnify } from "@mdi/js";
-import { ref, provide, watch } from "vue";
+import { ref, watch, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 import _debounce from "lodash/debounce";
 import DropList from "@/components/DropList.vue";
-import { itemIconMapHeaderNotLogged } from "@/utils/utils.js";
+import {
+  itemIconMapHeaderNotLogged,
+  itemIconMapHeaderLogged,
+} from "@/utils/utils.js";
 
 export default {
   components: {
@@ -46,8 +53,16 @@ export default {
     const pathMagnify = mdiMagnify;
     const isOpen = ref(false);
     const searchTerm = ref("");
+    const isUserAuthenticated = ref(
+      store.getters["firebaseModule/isAuthenticated"]
+    );
+    const itemIconMapper = ref(itemIconMapHeaderNotLogged);
 
-    provide("isOpen", isOpen);
+    watchEffect(() => {
+    itemIconMapper.value = isUserAuthenticated.value
+      ? itemIconMapHeaderLogged
+      : itemIconMapHeaderNotLogged;
+  });
 
     const debouncedUpdateSearchTerm = _debounce((newVal) => {
       store.dispatch("searchBarModule/updateSearchTerm", newVal);
@@ -57,12 +72,23 @@ export default {
       debouncedUpdateSearchTerm(newVal);
     });
 
+    const handleClose = () => {
+      isOpen.value = false;
+    };
+
+    const isAuthenticated = computed(
+      () => store.getters["firebaseModule/isAuthenticated"]
+    );
+
     return {
       path,
       pathMagnify,
       isOpen,
-      itemIconMapHeaderNotLogged,
       searchTerm,
+      handleClose,
+      isUserAuthenticated,
+      itemIconMapper,
+      isAuthenticated,
     };
   },
 };

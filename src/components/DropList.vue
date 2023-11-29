@@ -7,7 +7,7 @@
       <router-link
         v-for="(value, name, index) in itemIconMap"
         :key="index"
-        :to="{ name: name}"
+        :to="{ name: 'NotFound' }"
         class="px-6 py-4 cursor-pointer hover:bg-gray-800 focus:outline-none rounded-lg flex items-center"
       >
         <svg-icon
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { inject } from "vue";
 import { mixin as clickaway } from "vue3-click-away";
 import SvgIcon from "@jamescoyle/vue-icon";
 
@@ -37,10 +36,9 @@ export default {
   props: {
     itemIconMap: Object,
   },
-  setup() {
-    const isOpen = inject("isOpen");
+  setup(props, { emit }) {
     const onClickaway = () => {
-      if (isOpen.value) isOpen.value = false;
+      emit("close");
     };
 
     return { onClickaway };

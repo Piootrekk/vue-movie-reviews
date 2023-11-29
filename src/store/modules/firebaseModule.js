@@ -13,6 +13,7 @@ export default {
   },
   getters: {
     getUser: (state) => state.user,
+    isAuthenticated: (state) => state.user !== null,
   },
   mutations: {
     setUser: (state, user) => {
@@ -48,6 +49,17 @@ export default {
       await signOut(auth);
       commit("setUser", null);
       console.log("user logged out");
+    },
+    async checkAuthState({ commit }) {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log("user logged in");
+          commit("setUser", user);
+        } else {
+          console.log("user not logged in");
+          commit("setUser", null);
+        }
+      });
     },
   },
 };

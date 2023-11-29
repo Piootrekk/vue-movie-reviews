@@ -1,7 +1,8 @@
 <template>
   <div class="self-center text-xl">
     <ul class="flex">
-      <li
+      <RouterLink
+        to="/"
         class="ml-5 hover:text-gray-400 cursor-pointer"
         :class="{
           'text-gray-400': isPopularMovies,
@@ -10,8 +11,9 @@
         @click="setPopularMoviesTrue"
       >
         Movies
-      </li>
-      <li
+      </RouterLink>
+      <RouterLink
+        to="/"
         class="ml-5 hover:text-gray-400 cursor-pointer"
         :class="{
           'text-gray-400': isPopularTvShows,
@@ -20,7 +22,7 @@
         @click="setPopularShowsTrue"
       >
         TV shows
-      </li>
+      </RouterLink>
       <router-link to="/about" class="ml-5 hover:text-gray-400 cursor-pointer"
         >About</router-link
       >

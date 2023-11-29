@@ -26,6 +26,7 @@ const routes = [
   },
   {
     path: "/logout",
+    name: "Logout",
     // JAKIEŚ POJEBANE TO CHUJ WIE CZY DZIAŁA
     beforeEnter: (to, from, next) => {
       store
@@ -38,6 +39,18 @@ const routes = [
           next(false);
         });
     },
+  },
+  {
+    path: "/tests",
+    name: ["Profile", "Settings", "Favorites", "Comments"],
+    component: () => import("../views/DropListViews/Profile.vue"),
+  },
+
+  // OSTATNI ROUTE MUSI BYĆ ZAWSZE
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import("../views/NotFoundView.vue"),
   },
 ];
 
