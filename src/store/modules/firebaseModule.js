@@ -18,6 +18,8 @@ export default {
   mutations: {
     setUser: (state, user) => {
       state.user = user;
+      // Zapisz dane użytkownika w localStorage po zalogowaniu
+      localStorage.setItem("user", JSON.stringify(user));
     },
   },
   actions: {
@@ -48,18 +50,28 @@ export default {
     logout: async ({ commit }) => {
       await signOut(auth);
       commit("setUser", null);
+      // Usuń dane użytkownika z localStorage po wylogowaniu
+      localStorage.removeItem("user");
       console.log("user logged out");
     },
     async checkAuthState({ commit }) {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          console.log("user logged in");
-          commit("setUser", user);
-        } else {
-          console.log("user not logged in");
-          commit("setUser", null);
-        }
-      });
+      // Sprawdź, czy są zapisane dane użytkownika w localStorage
+      const userFromStorage = localStorage.getItem("user");
+      if (userFromStorage) {
+        const user = JSON.parse(userFromStorage);
+        console.log("user logged in from localStorage");
+        commit("setUser", user);
+      } else {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            console.log("user logged in");
+            commit("setUser", user);
+          } else {
+            console.log("user not logged in");
+            commit("setUser", null);
+          }
+        });
+      }
     },
   },
 };
