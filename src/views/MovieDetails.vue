@@ -1,7 +1,9 @@
 <template>
   <Header />
   <BodyWrapper>
-    <h2>TU NARAZIE NIE MA NIC ¯\_(ツ)_/¯</h2>
+    <template v-slot:main-movie>
+      <h1>TU NARAZIE NIE MA NIC ¯\_(ツ)_/¯</h1>
+    </template>
   </BodyWrapper>
 </template>
 

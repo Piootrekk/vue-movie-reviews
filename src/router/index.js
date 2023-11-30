@@ -39,6 +39,11 @@ const routes = [
         });
     },
   },
+  {
+    path: "/movie/:id",
+    name: "Movie",
+    component: () => import("../views/MovieDetails.vue"),
+  },
 
   // OSTATNI ROUTE MUSI BYĆ ZAWSZE
   {

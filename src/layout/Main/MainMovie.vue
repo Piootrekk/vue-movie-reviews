@@ -1,5 +1,6 @@
 <template>
-  <div
+  <router-link
+    :to="{ path: `/movie/${id}` }"
     class="rounded-lg border shadow-lg border-gray-600 pb-8 flex flex-col items-center hover:scale-110 transition-all hover:opacity-75 duration-500 ease-in-out mb-5 cursor-pointer"
   >
     <img
@@ -12,14 +13,13 @@
     /></span>
     <span class="font-bold text-center mx-1">{{ year }}</span> <br />
     <button
-      @click="ButtonClick"
+      @click.prevent="ButtonClick"
       class="w-24 mt-auto px-2 py-2 text-white rounded-full focus:outline-none"
-      :class = "follow ? 'bg-blue-500' : 'bg-red-500'"
+      :class="follow ? 'bg-blue-500' : 'bg-red-500'"
     >
       {{ follow ? "Follow" : "Unfollow" }}
-      
     </button>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -29,6 +29,7 @@ export default {
     link: String,
     title: String,
     year: String,
+    id: String,
   },
   name: "MainMovie",
   setup(props, context) {
@@ -38,6 +39,6 @@ export default {
     };
     return { follow, ButtonClick };
   },
-  emits: ["my-event"]
+  emits: ["my-event"],
 };
 </script>

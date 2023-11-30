@@ -18,6 +18,7 @@
           :link="movie.Poster"
           :title="movie.Title"
           :year="movie.Year"
+          :id="movie.imdbID"
           @my-event="onFollow"
         />
       </template>
