@@ -4,7 +4,7 @@
       <h2
         class="text-red-500 font-extrabold leading-none text-xl text-center flex"
       >
-        No results found
+        <slot></slot>
       </h2>
     </div>
   </div>

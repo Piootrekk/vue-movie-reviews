@@ -95,7 +95,7 @@ export default {
       try {
         isLoading.value = true;
         // Wait promise for 5sec
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         await store.dispatch("firebaseModule/createUser", {
           email: email.value,
           password: password.value,

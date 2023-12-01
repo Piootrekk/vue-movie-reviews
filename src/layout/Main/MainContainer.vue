@@ -1,15 +1,11 @@
 <template>
   <div>
-    <div
+    <NotFoundWrapper
+      :displayedMovies="displayedMovies"
       v-if="displayedMovies === undefined || displayedMovies.length === 0"
-      class="justify-between mt-8 mx-auto container"
     >
-      <h2
-        class="text-red-500 font-extrabold leading-none text-xl text-center flex"
-      >
-        No results found
-      </h2>
-    </div>
+      NO RESULTS FOUND
+    </NotFoundWrapper>
     <BodyWrapper v-else :isLoading="isLoading">
       <template v-slot:main-movie>
         <MainMovie
@@ -31,12 +27,14 @@ import { computed, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import MainMovie from "./MainMovie.vue";
 import BodyWrapper from "@/components/BodyWrapper.vue";
+import NotFoundWrapper from "@/components/NotFoundWrapper.vue";
 
 export default {
   name: "MainContainer",
   components: {
     MainMovie,
     BodyWrapper,
+    NotFoundWrapper,
   },
   setup() {
     const store = useStore();
