@@ -18,7 +18,6 @@ export default {
   mutations: {
     setUser: (state, user) => {
       state.user = user;
-      // Zapisz dane użytkownika w localStorage po zalogowaniu
       localStorage.setItem("user", JSON.stringify(user));
     },
   },

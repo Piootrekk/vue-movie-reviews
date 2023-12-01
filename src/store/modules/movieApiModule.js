@@ -60,6 +60,7 @@ export default {
     },
 
     async fetchmovieDetails({ commit }, id) {
+      commit("setLoading", true);
       const apiUrl = `http://www.omdbapi.com/?apikey=${apiKeys.API_KEY2}&i=${id}&plot=full`;
 
       try {
@@ -79,6 +80,7 @@ export default {
           error
         );
       }
+      commit("setLoading", false);
     },
   },
 };
