@@ -1,4 +1,5 @@
 <template>
-  <h1 class="text-center">TU NARAZIE NIE MA NIC ¯\_(ツ)_/¯</h1>
+  <h1 class="text-3xl text-center mb-8">Tu narazie nic nie ma ¯\_(ツ)_/¯</h1>
+  <p class="ml-5 text-xl">Kiedyś zrobie</p>
 </template>
 <script></script>

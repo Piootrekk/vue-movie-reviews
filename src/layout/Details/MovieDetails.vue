@@ -36,16 +36,20 @@
         <h1 class="text-center">Ops coś się wypierdoliło ¯\_(ツ)_/¯</h1>
       </div>
       <div class="flex justify-between gap-7 mb-2">
-        <CustomButton label="Rate"></CustomButton>
-        <CustomButton label="Plot"></CustomButton>
-        <CustomButton label="Comments"></CustomButton>
+        <CustomButton label="Rate" :handleClick="RateClick"></CustomButton>
+        <CustomButton label="Plot" :handleClick="PlotClick"></CustomButton>
+        <CustomButton
+          label="Comments"
+          :handleClick="CommentsClick"
+        ></CustomButton>
       </div>
     </div>
     <div
-      class="border shadow-lg border-gray-600 rounded px-5 py-5"
+      class="border shadow-lg border-gray-600 rounded px-5 py-5 animate-popping-up"
       v-if="movieDetails !== null"
+      :key="selectedComponent"
     >
-      <DetailsRate :movie="movieDetails" />
+      <component :is="selectedComponent" :movie="movieDetails" />
     </div>
   </div>
 </template>
@@ -55,7 +59,9 @@ import Header from "@/layout/Header/Header.vue";
 import LoadingSpin from "@/components/LoadingSpin.vue";
 import CustomButton from "@/components/CustomButton.vue";
 import DetailsRate from "./DetailsRate.vue";
-import { onMounted, computed } from "vue";
+import DetailsPlot from "./DetailsPlot.vue";
+import DetailsComments from "./DetailsComments.vue";
+import { onMounted, computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
@@ -66,10 +72,13 @@ export default {
     LoadingSpin,
     CustomButton,
     DetailsRate,
+    DetailsPlot,
+    DetailsComments,
   },
   setup() {
     const route = useRoute();
     const store = useStore();
+    const selectedComponent = ref("DetailsRate");
     const movieDetails = computed(() => {
       return store.getters["movieApiModule/selectedMovie"];
     });
@@ -80,9 +89,28 @@ export default {
       store.dispatch("movieApiModule/fetchmovieDetails", movieId);
     });
 
+    const RateClick = () => {
+      selectedComponent.value = "DetailsRate";
+      console.log(selectedComponent.value);
+    };
+
+    const PlotClick = () => {
+      selectedComponent.value = "DetailsPlot";
+      console.log(selectedComponent.value);
+    };
+
+    const CommentsClick = () => {
+      selectedComponent.value = "DetailsComments";
+      console.log(selectedComponent.value);
+    };
+
     return {
       movieDetails,
       isLoading,
+      RateClick,
+      PlotClick,
+      CommentsClick,
+      selectedComponent,
     };
   },
 };

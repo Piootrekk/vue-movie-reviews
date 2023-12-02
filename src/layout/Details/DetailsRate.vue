@@ -27,7 +27,7 @@
       class="py-2 text-xl text-center animate-popping-up"
       v-if="acceptedStars > 0"
     >
-      Your rate: {{ acceptedStars }}
+      Your rate: {{ acceptedStars }} ☺
     </p>
   </div>
 </template>
