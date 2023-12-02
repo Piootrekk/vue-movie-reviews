@@ -5,21 +5,21 @@
       class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16 relative"
     >
       <h2 class="text-4xl font-semibold mb-6 text-center">Login</h2>
+
+      <!-- Use v-for to dynamically create CustomInput components -->
       <CustomInput
-        label="Email"
-        v-model="email"
-        type="text"
-        autocomplete="email"
+        v-for="(input, key) in formInputs"
+        :key="key"
+        :label="input.label"
+        v-model="input.value"
+        :type="input.type"
+        :autocomplete="input.autocomplete"
       />
-      <CustomInput
-        label="Password"
-        v-model="password"
-        type="password"
-        autocomplete="password"
-      />
+
       <p v-if="errorMessage" class="text-red-500 text-xs w-48 mx-2">
         {{ errorMessage }}
       </p>
+
       <CustomButton label="Login" :isLoading="isLoading" :handleClick="login" />
       <HomeAboutLinks />
     </form>
@@ -43,18 +43,31 @@ export default {
   setup() {
     const store = useStore();
 
-    const email = ref("");
-    const password = ref("");
+    const formInputs = {
+      email: {
+        label: "Email",
+        valueModel: ref(""),
+        type: "text",
+        autocomplete: "email",
+      },
+      password: {
+        label: "Password",
+        valueModel: ref(""),
+        type: "password",
+        autocomplete: "password",
+      },
+    };
+
     const isLoading = ref(false);
     const errorMessage = ref("");
+
     const login = async () => {
       try {
         isLoading.value = true;
-        // Wait promise for 5sec
         await new Promise((resolve) => setTimeout(resolve, 1000));
         await store.dispatch("firebaseModule/login", {
-          email: email.value,
-          password: password.value,
+          email: formInputs.email.value,
+          password: formInputs.password.value,
         });
       } catch (error) {
         errorMessage.value = error.message;
@@ -64,11 +77,10 @@ export default {
     };
 
     return {
-      email,
-      password,
-      login,
+      formInputs,
       isLoading,
       errorMessage,
+      login,
     };
   },
 };

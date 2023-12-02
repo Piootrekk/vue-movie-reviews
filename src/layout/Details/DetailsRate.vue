@@ -51,9 +51,12 @@ export default {
   setup() {
     const filledStars = ref(0);
     const acceptedStars = ref(0);
+    const starClicked = ref(false);
 
     const hoverStar = (star) => {
-      filledStars.value = star;
+      if (!starClicked.value) {
+        filledStars.value = star;
+      }
     };
 
     const resetStars = () => {
@@ -66,6 +69,7 @@ export default {
     const clickStar = (star) => {
       filledStars.value = star;
       acceptedStars.value = star;
+      starClicked.value = true;
     };
 
     const getStarPath = (star) => {

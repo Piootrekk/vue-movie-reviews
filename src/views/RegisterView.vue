@@ -5,33 +5,23 @@
       class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16"
     >
       <h2 class="text-4xl font-semibold mb-6 text-center">Register</h2>
+
+      <!-- Use v-for to dynamically create CustomInput components -->
       <CustomInput
-        label="Email"
-        v-model="email"
-        errorMessage="Email is not valid"
-        type="text"
-        autocomplete="email"
-        @handleInput="validateEmail"
+        v-for="(input, key) in formInputs"
+        :key="key"
+        :label="input.label"
+        v-model="input.value"
+        :errorMessage="input.errorMessage"
+        :type="input.type"
+        :autocomplete="input.autocomplete"
+        @handleInput="input.validate"
       />
-      <CustomInput
-        label="Password"
-        v-model="password"
-        errorMessage="Password min 6 characters"
-        type="password"
-        autocomplete="password"
-        @handleInput="validatePassword"
-      />
-      <CustomInput
-        label="Confirm password"
-        v-model="passwordConfirmation"
-        errorMessage="Passwords do not match"
-        type="password"
-        autocomplete="password"
-        @handleInput="validatePasswordsMatch"
-      />
+
       <p v-if="errorMessage" class="text-red-500 text-xs w-48 mx-2">
         {{ errorMessage }}
       </p>
+
       <CustomButton
         label="Register"
         :isButtonDisabled="isRegisterButtonDisabled"
@@ -60,9 +50,34 @@ export default {
   setup() {
     const store = useStore();
 
-    const email = ref("");
-    const password = ref("");
-    const passwordConfirmation = ref("");
+    // Define an object for form inputs
+    const formInputs = {
+      email: {
+        label: "Email",
+        valueModel: ref(""),
+        errorMessage: "Email is not valid",
+        type: "text",
+        autocomplete: "email",
+        validate: validateEmail,
+      },
+      password: {
+        label: "Password",
+        valueModel: ref(""),
+        errorMessage: "Password min 6 characters",
+        type: "password",
+        autocomplete: "password",
+        validate: validatePassword,
+      },
+      passwordConfirmation: {
+        label: "Confirm password",
+        valueModel: ref(""),
+        errorMessage: "Passwords do not match",
+        type: "password",
+        autocomplete: "password",
+        validate: validatePasswordsMatch,
+      },
+    };
+
     const isLoading = ref(false);
     const errorMessage = ref("");
 
@@ -72,33 +87,34 @@ export default {
       passwordConfirmation: false,
     });
 
-    const validateEmail = (isValid) => {
-      isValid.value = /\S+@\S+\.\S+/.test(email.value);
+    function validateEmail(isValid) {
+      isValid.value = /\S+@\S+\.\S+/.test(formInputs.email.value);
       AllValidations.value.email = isValid.value;
-    };
+    }
 
-    const validatePassword = (isValid) => {
-      isValid.value = password.value.length >= 6;
+    function validatePassword(isValid) {
+      isValid.value = formInputs.password.value.length >= 6;
       AllValidations.value.password = isValid.value;
-    };
+    }
 
-    const validatePasswordsMatch = (isValid) => {
-      isValid.value = password.value === passwordConfirmation.value;
+    function validatePasswordsMatch(isValid) {
+      isValid.value =
+        formInputs.password.value === formInputs.passwordConfirmation.value;
       AllValidations.value.passwordConfirmation = isValid.value;
-    };
+    }
 
     const isRegisterButtonDisabled = computed(() => {
       return Object.values(AllValidations.value).some((isValid) => !isValid);
     });
 
-    const register = async () => {
+    async function register() {
       try {
         isLoading.value = true;
         // Wait promise for 5sec
         await new Promise((resolve) => setTimeout(resolve, 1000));
         await store.dispatch("firebaseModule/createUser", {
-          email: email.value,
-          password: password.value,
+          email: formInputs.email.value,
+          password: formInputs.password.value,
         });
       } catch (error) {
         console.error(error.message);
@@ -106,19 +122,14 @@ export default {
       } finally {
         isLoading.value = false;
       }
-    };
+    }
 
     return {
-      email,
-      password,
-      passwordConfirmation,
-      validateEmail,
-      validatePassword,
-      validatePasswordsMatch,
-      register,
+      formInputs,
       isRegisterButtonDisabled,
       isLoading,
       errorMessage,
+      register,
     };
   },
 };
