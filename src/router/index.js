@@ -1,22 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import store from "../store";
+import authMiddleware from "./Middlewares/authMiddleware";
+import logoutMiddleware from "./Middlewares/logoutMiddleware";
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: HomeView,
+    component: () => import("../views/HomeView.vue"),
   },
   {
     path: "/login",
     name: "Login",
     component: () => import("../views/LoginView.vue"),
+    beforeEnter: authMiddleware,
   },
   {
     path: "/register",
     name: "Register",
     component: () => import("../views/RegisterView.vue"),
+    beforeEnter: authMiddleware,
   },
   {
     path: "/about",
@@ -26,18 +28,7 @@ const routes = [
   {
     path: "/logout",
     name: "Logout",
-    // JAKIEŚ POJEBANE TO CHUJ ALE DZIAŁA XD
-    beforeEnter: (to, from, next) => {
-      store
-        .dispatch("firebaseModule/logout")
-        .then(() => {
-          next("/");
-        })
-        .catch((error) => {
-          console.error("Logout failed:", error);
-          next(false);
-        });
-    },
+    beforeEnter: logoutMiddleware,
   },
   {
     path: "/movie/:id",

@@ -19,16 +19,13 @@
             :alt="movieDetails.Title"
           />
           <div class="flex flex-col ml-5 text-xl">
-            <p class="py-2"><b>Released:</b> {{ movieDetails.Released }}</p>
-            <p class="py-2"><b>Runtime: </b>{{ movieDetails.Runtime }}</p>
-            <p class="py-2"><b>Genre:</b> {{ movieDetails.Genre }}</p>
-            <p class="py-2"><b>Director: </b>{{ movieDetails.Director }}</p>
-            <p class="py-2"><b>Writer:</b> {{ movieDetails.Writer }}</p>
-            <p class="py-2"><b>Actors:</b> {{ movieDetails.Actors }}</p>
-            <p class="py-2"><b>Language:</b> {{ movieDetails.Language }}</p>
-            <p class="py-2"><b>Country:</b> {{ movieDetails.Country }}</p>
-            <p class="py-2"><b>Awards:</b> {{ movieDetails.Awards }}</p>
-            <p class="py-2"><b>BoxOffice:</b> {{ movieDetails.BoxOffice }}</p>
+            <p
+              v-for="(value, index) in detailsLabels"
+              :key="index"
+              class="py-2"
+            >
+              <b>{{ value }}:</b> {{ movieDetails[value] }}
+            </p>
           </div>
         </div>
       </div>
@@ -37,7 +34,7 @@
       </div>
       <div class="flex justify-between gap-7 mb-2">
         <CustomButton label="Rate" :handleClick="RateClick"></CustomButton>
-        <CustomButton label="Plot" :handleClick="PlotClick"></CustomButton>
+        <CustomButton label="Info" :handleClick="PlotClick"></CustomButton>
         <CustomButton
           label="Comments"
           :handleClick="CommentsClick"
@@ -79,6 +76,20 @@ export default {
     const route = useRoute();
     const store = useStore();
     const selectedComponent = ref("DetailsRate");
+
+    const detailsLabels = [
+      "Released",
+      "Runtime",
+      "Genre",
+      "Director",
+      "Writer",
+      "Actors",
+      "Language",
+      "Country",
+      "Awards",
+      "BoxOffice",
+    ];
+
     const movieDetails = computed(() => {
       return store.getters["movieApiModule/selectedMovie"];
     });
@@ -111,6 +122,7 @@ export default {
       PlotClick,
       CommentsClick,
       selectedComponent,
+      detailsLabels,
     };
   },
 };
