@@ -25,7 +25,6 @@
             <p class="py-2"><b>Director: </b>{{ movieDetails.Director }}</p>
             <p class="py-2"><b>Writer:</b> {{ movieDetails.Writer }}</p>
             <p class="py-2"><b>Actors:</b> {{ movieDetails.Actors }}</p>
-
             <p class="py-2"><b>Language:</b> {{ movieDetails.Language }}</p>
             <p class="py-2"><b>Country:</b> {{ movieDetails.Country }}</p>
             <p class="py-2"><b>Awards:</b> {{ movieDetails.Awards }}</p>
@@ -42,8 +41,11 @@
         <CustomButton label="Comments"></CustomButton>
       </div>
     </div>
-    <div class="border shadow-lg border-gray-600 rounded px-5 py-5">
-      <h1 class="text-center">TU NARAZIE NIE MA NIC ¯\_(ツ)_/¯</h1>
+    <div
+      class="border shadow-lg border-gray-600 rounded px-5 py-5"
+      v-if="movieDetails !== null"
+    >
+      <DetailsRate :movie="movieDetails" />
     </div>
   </div>
 </template>
@@ -52,6 +54,7 @@
 import Header from "@/layout/Header/Header.vue";
 import LoadingSpin from "@/components/LoadingSpin.vue";
 import CustomButton from "@/components/CustomButton.vue";
+import DetailsRate from "./DetailsRate.vue";
 import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -62,6 +65,7 @@ export default {
     Header,
     LoadingSpin,
     CustomButton,
+    DetailsRate,
   },
   setup() {
     const route = useRoute();
