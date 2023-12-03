@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BodyWrapper from "@/components/BodyWrapper.vue";
+import BodyWrapper from "@/layout/StyleWrappers/BodyWrapper.vue";
 import Header from "@/layout/Header/Header.vue";
 
 export default {

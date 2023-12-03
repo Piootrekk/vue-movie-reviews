@@ -26,8 +26,8 @@
 import { computed, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import MainMovie from "./MainMovie.vue";
-import BodyWrapper from "@/components/BodyWrapper.vue";
-import NotFoundWrapper from "@/components/NotFoundWrapper.vue";
+import BodyWrapper from "../StyleWrappers/BodyWrapper.vue";
+import NotFoundWrapper from "../StyleWrappers/NotFoundWrapper.vue";
 
 export default {
   name: "MainContainer",

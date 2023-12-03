@@ -5,8 +5,6 @@
       class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16 relative"
     >
       <h2 class="text-4xl font-semibold mb-6 text-center">Login</h2>
-
-      <!-- Use v-for to dynamically create CustomInput components -->
       <CustomInput
         v-for="(input, key) in formInputs"
         :key="key"
@@ -28,6 +26,7 @@
 
 <script>
 import { useStore } from "vuex";
+import router from "@/router";
 import CustomInput from "@/components/CustomInput.vue";
 import CustomButton from "@/components/CustomButton.vue";
 import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
@@ -69,6 +68,7 @@ export default {
           email: formInputs.email.value,
           password: formInputs.password.value,
         });
+        router.push("/");
       } catch (error) {
         errorMessage.value = error.message;
       } finally {

@@ -35,6 +35,7 @@
 
 <script>
 import { useStore } from "vuex";
+import router from "@/router";
 import CustomInput from "@/components/CustomInput.vue";
 import CustomButton from "@/components/CustomButton.vue";
 import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
@@ -116,6 +117,7 @@ export default {
           email: formInputs.email.value,
           password: formInputs.password.value,
         });
+        router.push('/');
       } catch (error) {
         console.error(error.message);
         errorMessage.value = error.message;

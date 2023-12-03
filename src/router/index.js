@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import authMiddleware from "./Middlewares/authMiddleware";
 import logoutMiddleware from "./Middlewares/logoutMiddleware";
+import movieDetailsMiddleware from "./Middlewares/movieDetailsMiddleware";
 
 const routes = [
   {
@@ -34,6 +35,7 @@ const routes = [
     path: "/movie/:id",
     name: "Movie",
     component: () => import("../views/MovieDetailsView.vue"),
+    beforeEnter: movieDetailsMiddleware,
   },
 
   {

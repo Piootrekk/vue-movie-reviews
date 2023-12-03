@@ -58,9 +58,8 @@ import CustomButton from "@/components/CustomButton.vue";
 import DetailsRate from "./DetailsRate.vue";
 import DetailsPlot from "./DetailsPlot.vue";
 import DetailsComments from "./DetailsComments.vue";
-import { onMounted, computed, ref } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
 
 export default {
   name: "MovieDetails",
@@ -73,7 +72,6 @@ export default {
     DetailsComments,
   },
   setup() {
-    const route = useRoute();
     const store = useStore();
     const selectedComponent = ref("DetailsRate");
 
@@ -94,11 +92,6 @@ export default {
       return store.getters["movieApiModule/selectedMovie"];
     });
     const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
-
-    onMounted(() => {
-      const movieId = route.params.id;
-      store.dispatch("movieApiModule/fetchmovieDetails", movieId);
-    });
 
     const RateClick = () => {
       selectedComponent.value = "DetailsRate";
