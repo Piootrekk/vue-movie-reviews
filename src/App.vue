@@ -9,7 +9,7 @@ export default {
   name: "App",
   setup() {
     const initApp = async () => {
-      await useStore().dispatch("firebaseModule/checkAuthState");
+      await useStore().dispatch("firebaseAuthModule/checkAuthState");
     };
 
     onMounted(() => {

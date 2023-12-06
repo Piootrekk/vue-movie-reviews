@@ -8,10 +8,9 @@
       alt="movie"
       class="w-full h-96 object-cover rounded-lg p-1"
     />
-    <span class="text-2xl font-bold text-center mt-3 mx-1"
-      >{{ title }}<br
-    /></span>
-    <span class="font-bold text-center mx-1">{{ year }}</span> <br />
+    <h2 class="text-2xl font-bold text-center mt-3 mx-1">{{ title }}<br /></h2>
+    <h3 class="font-bold text-center mx-1">{{ year }}</h3>
+    <br />
     <button
       @click.prevent="ButtonClick"
       class="w-24 mt-auto px-2 py-2 text-white rounded-full focus:outline-none"

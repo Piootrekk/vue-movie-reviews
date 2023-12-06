@@ -1,13 +1,12 @@
 <template>
-  <Header />
   <div v-if="isLoading" class="mt-8 mx-auto container">
     <LoadingSpin />
   </div>
   <div
     v-else
-    class="container animate-popping-up mt-8 grid gap-4 mx-auto mb-7 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1"
+    class="container animate-popping-up mt-8 grid mx-auto mb-7 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1"
   >
-    <div class="border shadow-lg border-gray-600 rounded px-5 py-5">
+    <div class="border-r-2 shadow-lg border-gray-600 px-5 py-5">
       <div v-if="movieDetails !== null">
         <h1 class="text-3xl text-center mb-8">
           {{ movieDetails.Title }}
@@ -32,17 +31,26 @@
       <div v-else>
         <h1 class="text-center">Ops coś się wypierdoliło ¯\_(ツ)_/¯</h1>
       </div>
-      <div class="flex justify-between gap-7 mb-2">
-        <CustomButton label="Rate" :handleClick="RateClick"></CustomButton>
-        <CustomButton label="Info" :handleClick="PlotClick"></CustomButton>
+      <div class="flex justify-between gap-7 mb-2 mt-10">
         <CustomButton
-          label="Comments"
-          :handleClick="CommentsClick"
+          class="w-full"
+          label="Rate"
+          :handleClick="RateClick"
+        ></CustomButton>
+        <CustomButton
+          class="w-full"
+          label="Info"
+          :handleClick="PlotClick"
+        ></CustomButton>
+        <CustomButton
+          class="w-full"
+          label="Reviews"
+          :handleClick="ReviewsClick"
         ></CustomButton>
       </div>
     </div>
     <div
-      class="border shadow-lg border-gray-600 rounded px-5 py-5 animate-popping-up"
+      class="shadow-lg animate-popping-up px-5 py-5"
       v-if="movieDetails !== null"
       :key="selectedComponent"
     >
@@ -52,24 +60,22 @@
 </template>
 
 <script>
-import Header from "@/layout/Header/Header.vue";
 import LoadingSpin from "@/components/LoadingSpin.vue";
 import CustomButton from "@/components/CustomButton.vue";
 import DetailsRate from "./DetailsRate.vue";
 import DetailsPlot from "./DetailsPlot.vue";
-import DetailsComments from "./DetailsComments.vue";
+import DetailsReview from "./DetailsReview.vue";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
   name: "MovieDetails",
   components: {
-    Header,
     LoadingSpin,
     CustomButton,
     DetailsRate,
     DetailsPlot,
-    DetailsComments,
+    DetailsReview,
   },
   setup() {
     const store = useStore();
@@ -103,8 +109,8 @@ export default {
       console.log(selectedComponent.value);
     };
 
-    const CommentsClick = () => {
-      selectedComponent.value = "DetailsComments";
+    const ReviewsClick = () => {
+      selectedComponent.value = "DetailsReview";
       console.log(selectedComponent.value);
     };
 
@@ -113,7 +119,7 @@ export default {
       isLoading,
       RateClick,
       PlotClick,
-      CommentsClick,
+      ReviewsClick,
       selectedComponent,
       detailsLabels,
     };

@@ -5,8 +5,6 @@
       class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16"
     >
       <h2 class="text-4xl font-semibold mb-6 text-center">Register</h2>
-
-      <!-- Use v-for to dynamically create CustomInput components -->
       <CustomInput
         v-for="(input, key) in formInputs"
         :key="key"
@@ -17,7 +15,6 @@
         :autocomplete="input.autocomplete"
         @handleInput="input.validate"
       />
-
       <p v-if="errorMessage" class="text-red-500 text-xs w-48 mx-2">
         {{ errorMessage }}
       </p>
@@ -111,13 +108,11 @@ export default {
     async function register() {
       try {
         isLoading.value = true;
-        // Wait promise for 5sec
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        await store.dispatch("firebaseModule/createUser", {
+        await store.dispatch("firebaseAuthModule/createUser", {
           email: formInputs.email.value,
           password: formInputs.password.value,
         });
-        router.push('/');
+        router.push("/");
       } catch (error) {
         console.error(error.message);
         errorMessage.value = error.message;

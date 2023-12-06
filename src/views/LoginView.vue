@@ -64,7 +64,7 @@ export default {
       try {
         isLoading.value = true;
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        await store.dispatch("firebaseModule/login", {
+        await store.dispatch("firebaseAuthModule/login", {
           email: formInputs.email.value,
           password: formInputs.password.value,
         });

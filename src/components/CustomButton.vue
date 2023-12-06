@@ -1,6 +1,6 @@
 <template>
   <button
-    class="w-full mt-8 p-2 rounded hover:bg-blue-700"
+    class="p-2 rounded hover:bg-blue-700"
     type="submit"
     :disabled="isButtonDisabled || isLoading"
     :class="{
