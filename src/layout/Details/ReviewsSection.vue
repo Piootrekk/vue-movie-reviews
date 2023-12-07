@@ -6,7 +6,7 @@
       <p class="text-center">{{ author }}</p>
       <p class="text-right">{{ date }}</p>
     </div>
-    <div class="mb-3 justify-between">
+    <div class="mb-3 justify-between px-3">
       <p class="text-xl">{{ text }}</p>
       <p v-if="rate !== 0">Rate: {{ rate }}</p>
     </div>

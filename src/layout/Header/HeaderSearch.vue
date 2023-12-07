@@ -51,7 +51,7 @@ export default {
     const isOpen = ref(false);
     const searchTerm = ref("");
     const isUserAuthenticated = computed(
-      () => store.getters["firebaseModule/isAuthenticated"]
+      () => store.getters["firebaseAuthModule/isAuthenticated"]
     );
     const itemIconMapper = ref(headerNotLoggedItems);
 

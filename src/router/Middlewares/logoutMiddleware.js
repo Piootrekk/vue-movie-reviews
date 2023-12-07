@@ -2,7 +2,7 @@ import { useStore } from "vuex";
 
 export default function logoutMiddleware(to, from, next) {
   useStore()
-    .dispatch("firebaseModule/logout")
+    .dispatch("firebaseAuthModule/logout")
     .then(() => {
       next("/");
     })

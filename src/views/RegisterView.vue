@@ -24,6 +24,7 @@
         :isButtonDisabled="isRegisterButtonDisabled"
         :isLoading="isLoading"
         :handleClick="register"
+        class="w-full"
       />
       <HomeAboutLinks />
     </form>

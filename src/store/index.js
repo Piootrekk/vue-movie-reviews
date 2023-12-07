@@ -4,6 +4,7 @@ import movieApiModule from "./modules/movieApiModule";
 import searchBarModule from "./modules/searchBarModule";
 import localStorageModule from "./modules/localStorageModule";
 import firebaseAuthModule from "./modules/firebaseAuthModule";
+import firebaseDatabaseModule from "./modules/firebaseDatabaseModule";
 
 export default createStore({
   modules: {
@@ -12,5 +13,6 @@ export default createStore({
     searchBarModule,
     localStorageModule,
     firebaseAuthModule,
+    firebaseDatabaseModule,
   },
 });

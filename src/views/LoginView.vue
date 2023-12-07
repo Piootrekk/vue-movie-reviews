@@ -18,7 +18,12 @@
         {{ errorMessage }}
       </p>
 
-      <CustomButton label="Login" :isLoading="isLoading" :handleClick="login" />
+      <CustomButton
+        label="Login"
+        :isLoading="isLoading"
+        :handleClick="login"
+        class="w-full"
+      />
       <HomeAboutLinks />
     </form>
   </div>
@@ -63,7 +68,6 @@ export default {
     const login = async () => {
       try {
         isLoading.value = true;
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         await store.dispatch("firebaseAuthModule/login", {
           email: formInputs.email.value,
           password: formInputs.password.value,
