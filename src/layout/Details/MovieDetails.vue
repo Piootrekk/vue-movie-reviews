@@ -65,6 +65,7 @@ import CustomButton from "@/components/CustomButton.vue";
 import DetailsRate from "./DetailsRate.vue";
 import DetailsPlot from "./DetailsPlot.vue";
 import DetailsReview from "./DetailsReview.vue";
+
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 

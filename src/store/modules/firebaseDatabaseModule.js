@@ -98,13 +98,9 @@ export default {
     ) {
       try {
         commit("setIsLoading", true);
-        console.log("state reviews", state.Reviews[0].id);
-        console.log("reviewId", reviewId);
         const existingReviewIndex = state.Reviews.findIndex(
           (review) => review.id === reviewId
         );
-        console.log("asdasdssssssssssss", state.Reviews);
-        console.log("existingReviewIndex", existingReviewIndex);
         if (existingReviewIndex !== -1) {
           const updatedReviews = [...state.Reviews];
           updatedReviews[existingReviewIndex] = {
@@ -112,7 +108,6 @@ export default {
             comment: newComment,
             updatedAt: serverTimestamp(),
           };
-          console.log("-----------updatedReviews", updatedReviews);
           commit("setReviews", updatedReviews);
 
           const reviewRef = doc(db, collectionName, reviewId);
@@ -127,8 +122,6 @@ export default {
         console.error("Error updating review:", error);
       } finally {
         commit("setIsLoading", false);
-        console.log("Review updated");
-        console.log("updated state reviews", state.Reviews);
       }
     },
     async deleteReview({ commit, state }, { reviewId, collectionName }) {

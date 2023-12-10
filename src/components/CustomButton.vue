@@ -1,10 +1,9 @@
 <template>
   <button
-    class="p-2 rounded hover:bg-blue-700"
+    class="p-2 rounded hover:opacity-80 bg-blue-500 text-white"
     type="submit"
     :disabled="isButtonDisabled || isLoading"
     :class="{
-      'bg-blue-500 text-white': !isButtonDisabled && !isLoading,
       'bg-gray-300 text-gray-500 cursor-not-allowed':
         isButtonDisabled || isLoading,
     }"
@@ -13,12 +12,20 @@
     <template v-if="isLoading">
       <LoadingSpinButton label="Processing..." />
     </template>
-    <template v-else>{{ label }}</template>
+    <template v-else>
+      <span v-if="withIcon">
+        <SvgIcon :path="withIcon" type="mdi" class="mx-1" />
+      </span>
+      <span v-else>
+        {{ label }}
+      </span>
+    </template>
   </button>
 </template>
 
 <script>
 import LoadingSpinButton from "@/components/LoadingSpinButton.vue";
+import SvgIcon from "@jamescoyle/vue-icon";
 
 export default {
   props: {
@@ -34,6 +41,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    withIcon: {
+      type: String,
+      required: false,
+      default: "",
+    },
     handleClick: {
       type: Function,
       default: () => {},
@@ -41,6 +53,7 @@ export default {
   },
   components: {
     LoadingSpinButton,
+    SvgIcon,
   },
   name: "CustomButton",
   setup(props) {

@@ -29,8 +29,19 @@
       :date="review.createdAt"
     >
       <div v-if="isUsersReview(review)" class="flex gap-2 mt-5">
-        <CustomButton class="w-1/8" label="Edit" @click="EditReviews(review.id)" />
-        <CustomButton class="w-1/8" label="Delete" @click="DelReviews(review.id)" />
+        <CustomButton
+          class="w-1/8 bg-green-700"
+          label="Edit"
+          @click="EditReviews(review.id)"
+          :withIcon="mdiNoteEdit"
+
+        />
+        <CustomButton
+          class="w-1/8 bg-red-700"
+          label="Delete"
+          @click="DelReviews(review.id)"
+          :withIcon="mdiTrashCan"
+        />
       </div>
     </ReviewsSection>
   </div>
@@ -38,13 +49,12 @@
     <p>No reviews :C</p>
   </div>
 
-  <!-- <CustomButton class="w-1/5" label="Edit" :handleClick="EditReviews" />
-    <CustomButton class="w-1/5" label="Delete" :handleClick="DelReviews" /> -->
 </template>
 <script>
 import CustomButton from "@/components/CustomButton.vue";
 import CustomInput from "@/components/CustomInput.vue";
 import ReviewsSection from "./ReviewsSection.vue";
+import { mdiNoteEdit, mdiTrashCan } from "@mdi/js";
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
 export default {
@@ -78,7 +88,6 @@ export default {
         rating: 0,
         comment: inputRef.value,
       };
-      console.log(docTOSend);
       await store.dispatch("firebaseDatabaseModule/addReview", {
         data: docTOSend,
         collectionName: "Reviews",
@@ -122,6 +131,8 @@ export default {
       EditReviews,
       reviews,
       isUsersReview,
+      mdiNoteEdit,
+      mdiTrashCan,
     };
   },
 };
