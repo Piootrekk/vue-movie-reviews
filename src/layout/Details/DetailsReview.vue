@@ -12,48 +12,49 @@
       label="Add"
       :handleClick="AddData"
       :isButtonDisabled="inputRef.length === 0"
-      :isLoading="isLoading"
     ></CustomButton>
   </div>
   <h1 class="text-3xl text-center mb-8">Other reviews</h1>
   <div class="flex justify-center">
     <CustomButton class="w-1/5" label="Show" :handleClick="ShowReviews" />
   </div>
-  <div v-if="reviews.length != 0 || reviews !== undefined">
-    <ReviewsSection
-      v-for="(review, index) in reviews"
-      :key="index"
-      :author="review.mail"
-      :text="review.comment"
-      :rate="review.rating"
-      :date="review.createdAt"
-    >
-      <div v-if="isUsersReview(review)" class="flex gap-2 mt-5">
-        <CustomButton
-          class="w-1/8 bg-green-700"
-          label="Edit"
-          @click="EditReviews(review.id)"
-          :withIcon="mdiNoteEdit"
-
-        />
-        <CustomButton
-          class="w-1/8 bg-red-700"
-          label="Delete"
-          @click="DelReviews(review.id)"
-          :withIcon="mdiTrashCan"
-        />
-      </div>
-    </ReviewsSection>
-  </div>
-  <div v-else>
+  <LoadingSpin v-if="isLoading" class="mt-11"/>
+  <div v-if="reviews.length === 0">
     <p>No reviews :C</p>
   </div>
-
+  <div v-else>
+    <div v-if="!isLoading" class="overflow-y-auto overflow-x-hidden max-h-80 pr-11">
+      <ReviewsSection
+        v-for="(review, index) in reviews"
+        :key="index"
+        :author="review.mail"
+        :text="review.comment"
+        :rate="review.rating"
+        :date="review.createdAt"
+      >
+        <div v-if="isUsersReview(review)" class="flex gap-2 mt-5">
+          <CustomButton
+            class="w-1/8 bg-green-700"
+            label="Edit"
+            @click="EditReviews(review.id)"
+            :withIcon="mdiNoteEdit"
+          />
+          <CustomButton
+            class="w-1/8 bg-red-700"
+            label="Delete"
+            @click="DelReviews(review.id)"
+            :withIcon="mdiTrashCan"
+          />
+        </div>
+      </ReviewsSection>
+    </div>
+  </div>
 </template>
 <script>
 import CustomButton from "@/components/CustomButton.vue";
 import CustomInput from "@/components/CustomInput.vue";
 import ReviewsSection from "./ReviewsSection.vue";
+import LoadingSpin from "@/components/LoadingSpin.vue";
 import { mdiNoteEdit, mdiTrashCan } from "@mdi/js";
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
@@ -63,6 +64,7 @@ export default {
     CustomButton,
     CustomInput,
     ReviewsSection,
+    LoadingSpin,
   },
   props: {
     movie: {
@@ -72,7 +74,9 @@ export default {
   },
   setup(props) {
     const inputRef = ref("");
-    const isLoading = ref(false);
+    const isLoading = computed(
+      () => store.getters["firebaseDatabaseModule/getIsLoading"]
+    );
     const store = useStore();
     const user = computed(() => store.getters["firebaseAuthModule/getUser"]);
     const reviews = computed(
@@ -80,7 +84,6 @@ export default {
     );
 
     const AddData = async () => {
-      isLoading.value = true;
       let docTOSend = {
         movieId: props.movie.imdbID,
         id_user: user.value.uid,
@@ -92,8 +95,6 @@ export default {
         data: docTOSend,
         collectionName: "Reviews",
       });
-
-      isLoading.value = false;
     };
 
     const ShowReviews = async () => {
