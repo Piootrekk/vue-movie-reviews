@@ -21,6 +21,7 @@
         class="h-20 w-20"
         @mouseover="hoverStar(star)"
         @click="clickStar(star)"
+        :style="{ pointerEvents: starClicked ? 'none' : 'auto' }"
       />
     </div>
     <p
@@ -83,6 +84,7 @@ export default {
       clickStar,
       getStarPath,
       acceptedStars,
+      starClicked,
     };
   },
 };

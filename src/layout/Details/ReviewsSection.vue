@@ -4,16 +4,19 @@
   >
     <div class="flex justify-between items-center mb-2">
       <p class="text-center">{{ author }}</p>
-      <p class="text-right">{{ date }}</p>
+      <p class="text-right">{{ date.toDate().toLocaleString() }}</p>
     </div>
     <div class="mb-3 justify-between px-3">
       <p class="text-xl">{{ text }}</p>
-      <p v-if="rate !== 0">Rate: {{ rate }}</p>
+      <p v-if="rate === '' || rate !== 0">Rate: {{ rate }}</p>
+      <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
+import { Timestamp } from "firebase/firestore";
+
 export default {
   name: "ReviewsSection",
   components: {},
@@ -31,7 +34,7 @@ export default {
       default: 0,
     },
     date: {
-      type: String,
+      type: Timestamp,
       required: true,
     },
   },
