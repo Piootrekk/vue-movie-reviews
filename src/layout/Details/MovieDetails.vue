@@ -65,6 +65,7 @@ import CustomButton from "@/components/CustomButton.vue";
 import DetailsRate from "./DetailsRate.vue";
 import DetailsPlot from "./DetailsPlot.vue";
 import DetailsReview from "./DetailsReview.vue";
+import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
 
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
@@ -77,6 +78,7 @@ export default {
     DetailsRate,
     DetailsPlot,
     DetailsReview,
+    NotAuthorizedView,
   },
   setup() {
     const store = useStore();
@@ -102,17 +104,18 @@ export default {
 
     const RateClick = () => {
       selectedComponent.value = "DetailsRate";
-      console.log(selectedComponent.value);
     };
 
     const PlotClick = () => {
       selectedComponent.value = "DetailsPlot";
-      console.log(selectedComponent.value);
     };
 
     const ReviewsClick = () => {
-      selectedComponent.value = "DetailsReview";
-      console.log(selectedComponent.value);
+      if (store.getters["firebaseAuthModule/isAuthenticated"]) {
+        selectedComponent.value = "DetailsReview";
+      } else {
+        selectedComponent.value = "NotAuthorizedView";
+      }
     };
 
     return {
