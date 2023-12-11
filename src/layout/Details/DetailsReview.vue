@@ -18,12 +18,15 @@
   <div class="flex justify-center">
     <CustomButton class="w-1/5" label="Show" :handleClick="ShowReviews" />
   </div>
-  <LoadingSpin v-if="isLoading" class="mt-11"/>
+  <LoadingSpin v-if="isLoading" class="mt-11" />
   <div v-if="reviews.length === 0">
     <p>No reviews :C</p>
   </div>
   <div v-else>
-    <div v-if="!isLoading" class="overflow-y-auto overflow-x-hidden max-h-80 pr-11">
+    <div
+      v-if="!isLoading"
+      class="overflow-y-auto overflow-x-hidden max-h-80 pr-11"
+    >
       <ReviewsSection
         v-for="(review, index) in reviews"
         :key="index"
@@ -36,14 +39,30 @@
           <CustomButton
             class="w-1/8 bg-green-700"
             label="Edit"
-            @click="EditReviews(review.id)"
+            :handleClick="() => (isEdit[index] = !isEdit[index])"
             :withIcon="mdiNoteEdit"
           />
+
           <CustomButton
             class="w-1/8 bg-red-700"
             label="Delete"
-            @click="DelReviews(review.id)"
+            :handleClick="() => DelReviews(review.id)"
             :withIcon="mdiTrashCan"
+          />
+        </div>
+        <div v-if="isEdit[index]" class="flex">
+          <CustomInput
+            class="h-10 w-full mb-0 mt-0 mr-4"
+            name="edit"
+            v-model="editModel"
+            :key="review.id"
+          />
+          <CustomButton
+            class="h-10 w-1/8 bg-blue-700 mt-8"
+            label="Edit"
+            :handleClick="() => EditReviews(review.id)"
+            :withIcon="mdiCheckBold"
+            :isButtonDisabled="editModel.length === 0"
           />
         </div>
       </ReviewsSection>
@@ -55,9 +74,10 @@ import CustomButton from "@/components/CustomButton.vue";
 import CustomInput from "@/components/CustomInput.vue";
 import ReviewsSection from "./ReviewsSection.vue";
 import LoadingSpin from "@/components/LoadingSpin.vue";
-import { mdiNoteEdit, mdiTrashCan } from "@mdi/js";
+import { mdiNoteEdit, mdiTrashCan, mdiCheckBold } from "@mdi/js";
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
+
 export default {
   name: "DetailsReview",
   components: {
@@ -82,6 +102,9 @@ export default {
     const reviews = computed(
       () => store.getters["firebaseDatabaseModule/getReviews"]
     );
+
+    const isEdit = ref([false]);
+    const editModel = ref("");
 
     const AddData = async () => {
       let docTOSend = {
@@ -109,14 +132,18 @@ export default {
         collectionName: "Reviews",
         reviewId: id,
       });
+      isEdit.value = [false];
+      editModel.value = "";
     };
 
     const EditReviews = async (id) => {
       await store.dispatch("firebaseDatabaseModule/updateReview", {
         collectionName: "Reviews",
         reviewId: id,
-        newComment: "EDITED",
+        newComment: editModel.value,
       });
+      isEdit.value = [false];
+      editModel.value = "";
     };
 
     const isUsersReview = (review) => {
@@ -134,6 +161,9 @@ export default {
       isUsersReview,
       mdiNoteEdit,
       mdiTrashCan,
+      isEdit,
+      editModel,
+      mdiCheckBold,
     };
   },
 };
