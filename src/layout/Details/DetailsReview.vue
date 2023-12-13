@@ -19,55 +19,55 @@
     <CustomButton class="w-1/5" label="Show" :handleClick="ShowReviews" />
   </div>
   <LoadingSpin v-if="isLoading" class="mt-11" />
-  <div v-if="reviews.length === 0">
+  <div
+    v-if="!isLoading && isAuthenticated && reviews.length > 0"
+    class="overflow-y-auto overflow-x-hidden max-h-72 pr-11"
+  >
+    <ReviewsSection
+      v-for="(review, index) in reviews"
+      :key="index"
+      :author="review.mail"
+      :text="review.comment"
+      :rate="review.rating"
+      :date="review.createdAt"
+    >
+      <div v-if="isUsersReview(review)" class="flex gap-2 mt-5">
+        <CustomButton
+          class="w-1/8 bg-green-700"
+          label="Edit"
+          :handleClick="() => (isEdit[index] = !isEdit[index])"
+          :withIcon="mdiNoteEdit"
+        />
+
+        <CustomButton
+          class="w-1/8 bg-red-700"
+          label="Delete"
+          :handleClick="() => DelReviews(review.id)"
+          :withIcon="mdiTrashCan"
+        />
+      </div>
+      <div v-if="isEdit[index]" class="flex">
+        <CustomInput
+          class="h-10 w-full mb-0 mt-0 mr-4"
+          name="edit"
+          v-model="editModel"
+          :key="review.id"
+        />
+        <CustomButton
+          class="h-10 w-1/8 bg-blue-700 mt-8"
+          label="Edit"
+          :handleClick="() => EditReviews(review.id)"
+          :withIcon="mdiCheckBold"
+          :isButtonDisabled="editModel.length === 0"
+        />
+      </div>
+    </ReviewsSection>
+  </div>
+  <div v-else-if="reviews.length === 0">
     <p>No reviews :C</p>
   </div>
-  <div v-else>
-    <div
-      v-if="!isLoading"
-      class="overflow-y-auto overflow-x-hidden max-h-80 pr-11"
-    >
-      <ReviewsSection
-        v-for="(review, index) in reviews"
-        :key="index"
-        :author="review.mail"
-        :text="review.comment"
-        :rate="review.rating"
-        :date="review.createdAt"
-      >
-        <div v-if="isUsersReview(review)" class="flex gap-2 mt-5">
-          <CustomButton
-            class="w-1/8 bg-green-700"
-            label="Edit"
-            :handleClick="() => (isEdit[index] = !isEdit[index])"
-            :withIcon="mdiNoteEdit"
-          />
 
-          <CustomButton
-            class="w-1/8 bg-red-700"
-            label="Delete"
-            :handleClick="() => DelReviews(review.id)"
-            :withIcon="mdiTrashCan"
-          />
-        </div>
-        <div v-if="isEdit[index]" class="flex">
-          <CustomInput
-            class="h-10 w-full mb-0 mt-0 mr-4"
-            name="edit"
-            v-model="editModel"
-            :key="review.id"
-          />
-          <CustomButton
-            class="h-10 w-1/8 bg-blue-700 mt-8"
-            label="Edit"
-            :handleClick="() => EditReviews(review.id)"
-            :withIcon="mdiCheckBold"
-            :isButtonDisabled="editModel.length === 0"
-          />
-        </div>
-      </ReviewsSection>
-    </div>
-  </div>
+
 </template>
 <script>
 import CustomButton from "@/components/CustomButton.vue";
@@ -99,6 +99,9 @@ export default {
     );
     const store = useStore();
     const user = computed(() => store.getters["firebaseAuthModule/getUser"]);
+    const isAuthenticated = computed(
+      () => store.getters["firebaseAuthModule/isAuthenticated"]
+    );
     const reviews = computed(
       () => store.getters["firebaseDatabaseModule/getReviews"]
     );
@@ -164,6 +167,7 @@ export default {
       isEdit,
       editModel,
       mdiCheckBold,
+      isAuthenticated,
     };
   },
 };

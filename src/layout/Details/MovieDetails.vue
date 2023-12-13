@@ -6,7 +6,9 @@
     v-else
     class="container animate-popping-up mt-8 grid mx-auto mb-7 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1"
   >
-    <div class="border-r-2 shadow-lg border-gray-600 px-5 py-5">
+    <div
+      class="shadow-lg px-5 py-5 border-gray-600 sm:border-b-2 sm:border-r-0 lg:border-b-0 lg:border-r-2"
+    >
       <div v-if="movieDetails !== null">
         <h1 class="text-3xl text-center mb-8">
           {{ movieDetails.Title }}
@@ -29,7 +31,7 @@
         </div>
       </div>
       <div v-else>
-        <h1 class="text-center">Ops coś się wypierdoliło ¯\_(ツ)_/¯</h1>
+        <h1 class="text-center">Ops coś się wypie.. ¯\_(ツ)_/¯</h1>
       </div>
       <div class="flex justify-between gap-7 mb-2 mt-10">
         <CustomButton
@@ -102,6 +104,10 @@ export default {
     });
     const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
 
+    const isAuthenticated = computed(() => {
+      return store.getters["firebaseAuthModule/isAuthenticated"];
+    });
+
     const RateClick = () => {
       selectedComponent.value = "DetailsRate";
     };
@@ -111,7 +117,7 @@ export default {
     };
 
     const ReviewsClick = () => {
-      if (store.getters["firebaseAuthModule/isAuthenticated"]) {
+      if (isAuthenticated.value) {
         selectedComponent.value = "DetailsReview";
       } else {
         selectedComponent.value = "NotAuthorizedView";

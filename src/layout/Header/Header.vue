@@ -5,13 +5,14 @@
     <RouterLink to="/">
       <div class="flex cursor-pointer">
         <svg-icon type="mdi" :path="path" size="40"></svg-icon>
-        <h1 class="mb-2 text-3xl ml-1 mt-1 font-extrabold leading-none">
+        <h1 class="mb-2 text-3xl  lg:text-3xl sm:text-3xl md:text-2xl ml-1 mt-1 font-extrabold leading-none">
           MovieReviewer
         </h1>
       </div>
     </RouterLink>
-    <HeaderNavItems />
-    <HeaderSearch />
+    <HeaderNavItems class="hidden md:flex" />
+    <HeaderSearch class="hidden md:flex md:pl-10" />
+    <MenuMobile class="md:hidden mr-5" />
   </header>
 </template>
 
@@ -20,12 +21,14 @@ import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiMovieOpen } from "@mdi/js";
 import HeaderNavItems from "./HeaderNavItems.vue";
 import HeaderSearch from "./HeaderSearch.vue";
+import MenuMobile from "./MenuMobile.vue";
 
 export default {
   components: {
     HeaderNavItems,
     HeaderSearch,
     SvgIcon,
+    MenuMobile,
   },
   name: "HeaderMain",
   setup() {
