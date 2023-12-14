@@ -47,20 +47,18 @@ export default {
   setup() {
     const store = useStore();
 
-    const formInputs = {
+    const formInputs = ref({
       email: {
         label: "Email",
-        valueModel: ref(""),
         type: "text",
         autocomplete: "email",
       },
       password: {
         label: "Password",
-        valueModel: ref(""),
         type: "password",
         autocomplete: "password",
       },
-    };
+    });
 
     const isLoading = ref(false);
     const errorMessage = ref("");
@@ -69,8 +67,8 @@ export default {
       try {
         isLoading.value = true;
         await store.dispatch("firebaseAuthModule/login", {
-          email: formInputs.email.value,
-          password: formInputs.password.value,
+          email: formInputs.value.email.value,
+          password: formInputs.value.password.value,
         });
         router.push("/");
       } catch (error) {

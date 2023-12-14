@@ -49,11 +49,9 @@ export default {
   setup() {
     const store = useStore();
 
-    // Define an object for form inputs
-    const formInputs = {
+    const formInputs = ref({
       email: {
         label: "Email",
-        valueModel: ref(""),
         errorMessage: "Email is not valid",
         type: "text",
         autocomplete: "email",
@@ -61,7 +59,6 @@ export default {
       },
       password: {
         label: "Password",
-        valueModel: ref(""),
         errorMessage: "Password min 6 characters",
         type: "password",
         autocomplete: "password",
@@ -69,13 +66,12 @@ export default {
       },
       passwordConfirmation: {
         label: "Confirm password",
-        valueModel: ref(""),
         errorMessage: "Passwords do not match",
         type: "password",
         autocomplete: "password",
         validate: validatePasswordsMatch,
       },
-    };
+    });
 
     const isLoading = ref(false);
     const errorMessage = ref("");
@@ -87,18 +83,19 @@ export default {
     });
 
     function validateEmail(isValid) {
-      isValid.value = /\S+@\S+\.\S+/.test(formInputs.email.value);
-      AllValidations.value.email = isValid.value;
+      isValid.value = /\S+@\S+\.\S+/.test(formInputs.value.email.value);
+      AllValidations.value.email = isValid;
     }
 
     function validatePassword(isValid) {
-      isValid.value = formInputs.password.value.length >= 6;
+      isValid.value = formInputs.value.password.value.length >= 6;
       AllValidations.value.password = isValid.value;
     }
 
     function validatePasswordsMatch(isValid) {
       isValid.value =
-        formInputs.password.value === formInputs.passwordConfirmation.value;
+        formInputs.value.password.value ===
+        formInputs.value.passwordConfirmation.value;
       AllValidations.value.passwordConfirmation = isValid.value;
     }
 
@@ -110,8 +107,8 @@ export default {
       try {
         isLoading.value = true;
         await store.dispatch("firebaseAuthModule/createUser", {
-          email: formInputs.email.value,
-          password: formInputs.password.value,
+          email: formInputs.value.email.value,
+          password: formInputs.value.password.value,
         });
         router.push("/");
       } catch (error) {
