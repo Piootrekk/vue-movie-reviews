@@ -5,7 +5,7 @@
         id="search"
         type="text"
         placeholder="Search..."
-        class="h-8 border-2 border-gray-700 bg-gray-700 rounded-full px-3 focus:outline-none text-gray-100 pl-12 mr-6 lg:w-full sm:w-full md:w-4/5 "
+        class="h-8 border-2 border-gray-700 bg-gray-700 rounded-full px-3 focus:outline-none text-gray-100 pl-12 mr-6 lg:w-full sm:w-full md:w-4/5"
         v-model="searchTerm"
       />
       <svg-icon
@@ -16,7 +16,7 @@
     </div>
 
     <div
-      class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center cursor-pointer relative border-2 border-gray-700 lg:ml-6"
+      class="w-12 h-12 rounded-full bg-gray-700 items-center justify-center cursor-pointer relative border-2 border-gray-700 lg:ml-6 hidden md:flex"
       @click="isOpen = !isOpen"
     >
       <svg-icon type="mdi" :path="path" size="30"></svg-icon>

@@ -6,7 +6,7 @@
       size="40"
       @click="toggleMenu"
     />
-    <MenuNavMobile :isOpen="isOpen" />
+    <MenuNavMobile :isOpen="isOpen" @close="closeNav" />
   </div>
 </template>
 
@@ -27,11 +27,17 @@ export default {
     const toggleMenu = () => {
       isOpen.value = !isOpen.value;
     };
+
+    const closeNav = () => {
+      isOpen.value = false;
+    };
+
     return {
       mdiMenu,
       mdiMenuOpen,
       isOpen,
       toggleMenu,
+      closeNav,
     };
   },
 };

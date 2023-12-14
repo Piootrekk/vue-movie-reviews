@@ -2,7 +2,7 @@
   <div class="flex justify-center items-center h-screen">
     <form
       @submit.prevent="register"
-      class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16"
+      class="rounded-lg border shadow-lg border-gray-600 p-8 animate-popping-up px-16 relative"
     >
       <h2 class="text-4xl font-semibold mb-6 text-center">Register</h2>
       <CustomInput
