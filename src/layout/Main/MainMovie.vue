@@ -1,3 +1,21 @@
+<script setup>
+import { ref, defineProps, defineEmits } from "vue";
+
+defineProps({
+  link: String,
+  title: String,
+  year: String,
+  id: String,
+});
+
+const emit = defineEmits(["my-event"]);
+
+const follow = ref(true);
+const ButtonClick = () => {
+  emit("my-event", follow);
+};
+</script>
+
 <template>
   <router-link
     :to="{ path: `/movie/${id}` }"
@@ -20,24 +38,3 @@
     </button>
   </router-link>
 </template>
-
-<script>
-import { ref } from "vue";
-export default {
-  props: {
-    link: String,
-    title: String,
-    year: String,
-    id: String,
-  },
-  name: "MainMovie",
-  setup(props, context) {
-    let follow = ref(true);
-    const ButtonClick = () => {
-      context.emit("my-event", follow);
-    };
-    return { follow, ButtonClick };
-  },
-  emits: ["my-event"],
-};
-</script>

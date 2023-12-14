@@ -1,3 +1,13 @@
+<script setup>
+import { defineProps } from "vue";
+
+defineProps({
+  props: {
+    displayedMovies: Array,
+  },
+});
+</script>
+
 <template>
   <div>
     <div class="justify-between mt-8 mx-auto container">
@@ -9,11 +19,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    displayedMovies: Array,
-  },
-};
-</script>

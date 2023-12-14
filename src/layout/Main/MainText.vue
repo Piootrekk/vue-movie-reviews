@@ -1,3 +1,16 @@
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const isPopularMovies = computed(
+  () => store.getters["popularModule/isPopular"].movie
+);
+const isPopularTvShows = computed(
+  () => store.getters["popularModule/isPopular"].tvShow
+);
+</script>
 <template>
   <div class="mx-auto container flex mt-6">
     <h2
@@ -9,27 +22,3 @@
     </h2>
   </div>
 </template>
-
-<script>
-import { computed } from "vue";
-import { useStore } from "vuex";
-
-export default {
-  name: "MainText",
-  setup() {
-    const store = useStore();
-
-    const isPopularMovies = computed(
-      () => store.getters["popularModule/isPopular"].movie
-    );
-    const isPopularTvShows = computed(
-      () => store.getters["popularModule/isPopular"].tvShow
-    );
-
-    return {
-      isPopularMovies,
-      isPopularTvShows,
-    };
-  },
-};
-</script>

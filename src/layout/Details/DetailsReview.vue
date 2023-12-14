@@ -1,3 +1,81 @@
+<script setup>
+import CustomButton from "@/components/CustomButton.vue";
+import CustomInput from "@/components/CustomInput.vue";
+import ReviewsSection from "./ReviewsSection.vue";
+import LoadingSpin from "@/components/LoadingSpin.vue";
+import { mdiNoteEdit, mdiTrashCan, mdiCheckBold } from "@mdi/js";
+import { useStore } from "vuex";
+import { computed, ref, defineProps } from "vue";
+
+const props = defineProps({
+  movie: {
+    type: Object,
+    required: true,
+  },
+});
+
+const inputRef = ref("");
+const isLoading = computed(
+  () => store.getters["firebaseDatabaseModule/getIsLoading"]
+);
+const store = useStore();
+const user = computed(() => store.getters["firebaseAuthModule/getUser"]);
+const isAuthenticated = computed(
+  () => store.getters["firebaseAuthModule/isAuthenticated"]
+);
+const reviews = computed(
+  () => store.getters["firebaseDatabaseModule/getReviews"]
+);
+
+const isEdit = ref([false]);
+const editModel = ref("");
+
+const AddData = async () => {
+  let docTOSend = {
+    movieId: props.movie.imdbID,
+    id_user: user.value.uid,
+    mail: user.value.email,
+    rating: 0,
+    comment: inputRef.value,
+  };
+  await store.dispatch("firebaseDatabaseModule/addReview", {
+    data: docTOSend,
+    collectionName: "Reviews",
+  });
+};
+
+const ShowReviews = async () => {
+  await store.dispatch("firebaseDatabaseModule/getReviewsByMovieId", {
+    collectionName: "Reviews",
+    movieId: props.movie.imdbID,
+  });
+};
+
+const DelReviews = async (id) => {
+  await store.dispatch("firebaseDatabaseModule/deleteReview", {
+    collectionName: "Reviews",
+    reviewId: id,
+  });
+  isEdit.value = [false];
+  editModel.value = "";
+};
+
+const EditReviews = async (id) => {
+  await store.dispatch("firebaseDatabaseModule/updateReview", {
+    collectionName: "Reviews",
+    reviewId: id,
+    newComment: editModel.value,
+  });
+  isEdit.value = [false];
+  editModel.value = "";
+};
+
+const isUsersReview = (review) => {
+  return review.id_user === user.value.uid;
+};
+</script>
+
+
 <template>
   <h1 class="text-3xl text-center mb-8">Your reviews</h1>
   <p class="ml-5 text-xl">Add your review</p>
@@ -66,109 +144,4 @@
   <div v-else-if="reviews.length === 0">
     <p>No reviews :C</p>
   </div>
-
-
 </template>
-<script>
-import CustomButton from "@/components/CustomButton.vue";
-import CustomInput from "@/components/CustomInput.vue";
-import ReviewsSection from "./ReviewsSection.vue";
-import LoadingSpin from "@/components/LoadingSpin.vue";
-import { mdiNoteEdit, mdiTrashCan, mdiCheckBold } from "@mdi/js";
-import { useStore } from "vuex";
-import { computed, ref } from "vue";
-
-export default {
-  name: "DetailsReview",
-  components: {
-    CustomButton,
-    CustomInput,
-    ReviewsSection,
-    LoadingSpin,
-  },
-  props: {
-    movie: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup(props) {
-    const inputRef = ref("");
-    const isLoading = computed(
-      () => store.getters["firebaseDatabaseModule/getIsLoading"]
-    );
-    const store = useStore();
-    const user = computed(() => store.getters["firebaseAuthModule/getUser"]);
-    const isAuthenticated = computed(
-      () => store.getters["firebaseAuthModule/isAuthenticated"]
-    );
-    const reviews = computed(
-      () => store.getters["firebaseDatabaseModule/getReviews"]
-    );
-
-    const isEdit = ref([false]);
-    const editModel = ref("");
-
-    const AddData = async () => {
-      let docTOSend = {
-        movieId: props.movie.imdbID,
-        id_user: user.value.uid,
-        mail: user.value.email,
-        rating: 0,
-        comment: inputRef.value,
-      };
-      await store.dispatch("firebaseDatabaseModule/addReview", {
-        data: docTOSend,
-        collectionName: "Reviews",
-      });
-    };
-
-    const ShowReviews = async () => {
-      await store.dispatch("firebaseDatabaseModule/getReviewsByMovieId", {
-        collectionName: "Reviews",
-        movieId: props.movie.imdbID,
-      });
-    };
-
-    const DelReviews = async (id) => {
-      await store.dispatch("firebaseDatabaseModule/deleteReview", {
-        collectionName: "Reviews",
-        reviewId: id,
-      });
-      isEdit.value = [false];
-      editModel.value = "";
-    };
-
-    const EditReviews = async (id) => {
-      await store.dispatch("firebaseDatabaseModule/updateReview", {
-        collectionName: "Reviews",
-        reviewId: id,
-        newComment: editModel.value,
-      });
-      isEdit.value = [false];
-      editModel.value = "";
-    };
-
-    const isUsersReview = (review) => {
-      return review.id_user === user.value.uid;
-    };
-
-    return {
-      AddData,
-      inputRef,
-      isLoading,
-      ShowReviews,
-      DelReviews,
-      EditReviews,
-      reviews,
-      isUsersReview,
-      mdiNoteEdit,
-      mdiTrashCan,
-      isEdit,
-      editModel,
-      mdiCheckBold,
-      isAuthenticated,
-    };
-  },
-};
-</script>

@@ -1,3 +1,40 @@
+<script setup>
+import SvgIcon from "@jamescoyle/vue-icon";
+import HeaderNavItems from "./HeaderNavItems.vue";
+import HeaderSearch from "./HeaderSearch.vue";
+import { headerLoggedItems, headerNotLoggedItems } from "@/utils/utils";
+import { mdiMenuOpen } from "@mdi/js";
+import { useStore } from "vuex";
+import { computed, watchEffect, ref, defineProps, defineEmits } from "vue";
+
+defineProps({
+  isOpen: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["close"]);
+
+const store = useStore();
+const isUserAuthenticated = computed(
+  () => store.getters["firebaseAuthModule/isAuthenticated"]
+);
+const itemIconMapper = ref(headerNotLoggedItems);
+
+watchEffect(() => {
+  itemIconMapper.value = isUserAuthenticated.value
+    ? headerLoggedItems
+    : headerNotLoggedItems;
+});
+const closeMenu = () => {
+  emit("close");
+};
+const handleClickedItem = (item) => {
+  item.action();
+};
+</script>
+
 <template>
   <div>
     <div
@@ -38,50 +75,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import SvgIcon from "@jamescoyle/vue-icon";
-import HeaderNavItems from "./HeaderNavItems.vue";
-import HeaderSearch from "./HeaderSearch.vue";
-import { headerLoggedItems, headerNotLoggedItems } from "@/utils/utils";
-import { mdiMenuOpen } from "@mdi/js";
-import { useStore } from "vuex";
-import { computed, watchEffect, ref } from "vue";
-
-export default {
-  props: {
-    isOpen: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  name: "MenuNavMobile",
-  components: { SvgIcon, HeaderNavItems, HeaderSearch },
-  setup(props, { emit }) {
-    const store = useStore();
-    const isUserAuthenticated = computed(
-      () => store.getters["firebaseAuthModule/isAuthenticated"]
-    );
-    const itemIconMapper = ref(headerNotLoggedItems);
-
-    watchEffect(() => {
-      itemIconMapper.value = isUserAuthenticated.value
-        ? headerLoggedItems
-        : headerNotLoggedItems;
-    });
-    const closeMenu = () => {
-      emit("close");
-    };
-    const handleClickedItem = (item) => {
-      item.action();
-    };
-
-    return {
-      closeMenu,
-      mdiMenuOpen,
-      itemIconMapper,
-      handleClickedItem,
-    };
-  },
-};
-</script>

@@ -1,3 +1,18 @@
+<script setup>
+import { defineProps, defineEmits, ref } from 'vue';
+
+defineProps(['label', 'modelValue', 'errorMessage']);
+
+const isValid = ref(true);
+
+const emit = defineEmits(['update:modelValue', 'handleInput']);
+
+const handleInput = (e) => {
+  emit('update:modelValue', e.target.value);
+  emit('handleInput', isValid);
+};
+</script>
+
 <template>
   <div class="mb-12 mt-8">
     <div class="relative">
@@ -22,30 +37,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { defineProps, defineEmits, ref } from "vue";
-
-defineProps({
-  label: {
-    type: String,
-    default: "",
-  },
-  modelValue: {
-    type: String,
-    default: "",
-  },
-  errorMessage: {
-    type: String,
-    default: "",
-  },
-});
-const isValid = ref(true);
-
-const emit = defineEmits(["update:modelValue", "handleInput"]);
-
-const handleInput = (e) => {
-  emit("update:modelValue", e.target.value);
-  emit("handleInput", isValid);
-};
-</script>

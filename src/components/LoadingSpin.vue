@@ -1,3 +1,5 @@
+<script setup></script>
+
 <template>
   <div class="flex justify-center items-center">
     <div
@@ -5,9 +7,3 @@
     ></div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "LoadingSpin",
-};
-</script>

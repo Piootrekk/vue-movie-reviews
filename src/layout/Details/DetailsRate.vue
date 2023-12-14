@@ -1,3 +1,43 @@
+<script setup>
+import { ref } from "vue";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiStarOutline, mdiStar } from "@mdi/js";
+import { defineProps } from "vue";
+
+defineProps({
+  movie: {
+    type: Object,
+    required: true,
+  },
+});
+const filledStars = ref(0);
+const acceptedStars = ref(0);
+const starClicked = ref(false);
+
+const hoverStar = (star) => {
+  if (!starClicked.value) {
+    filledStars.value = star;
+  }
+};
+// NA POTEM DO RESECIKU ;_;
+// const resetStars = () => {
+//   if (filledStars.value === 0) {
+//     filledStars.value = 0;
+//     acceptedStars.value = 0;
+//   }
+// };
+
+const clickStar = (star) => {
+  filledStars.value = star;
+  acceptedStars.value = star;
+  starClicked.value = true;
+};
+
+const getStarPath = (star) => {
+  return star <= filledStars.value ? mdiStar : mdiStarOutline;
+};
+</script>
+
 <template>
   <div>
     <h1 class="text-3xl text-center mb-8">Movie Rating</h1>
@@ -32,60 +72,3 @@
     </p>
   </div>
 </template>
-
-<script>
-import { ref } from "vue";
-import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiStarOutline, mdiStar } from "@mdi/js";
-
-export default {
-  name: "DetailsRate",
-  components: {
-    SvgIcon,
-  },
-  props: {
-    movie: {
-      type: Object,
-      required: true,
-    },
-  },
-  setup() {
-    const filledStars = ref(0);
-    const acceptedStars = ref(0);
-    const starClicked = ref(false);
-
-    const hoverStar = (star) => {
-      if (!starClicked.value) {
-        filledStars.value = star;
-      }
-    };
-
-    const resetStars = () => {
-      if (filledStars.value === 0) {
-        filledStars.value = 0;
-        acceptedStars.value = 0;
-      }
-    };
-
-    const clickStar = (star) => {
-      filledStars.value = star;
-      acceptedStars.value = star;
-      starClicked.value = true;
-    };
-
-    const getStarPath = (star) => {
-      return star <= filledStars.value ? mdiStar : mdiStarOutline;
-    };
-
-    return {
-      filledStars,
-      hoverStar,
-      resetStars,
-      clickStar,
-      getStarPath,
-      acceptedStars,
-      starClicked,
-    };
-  },
-};
-</script>

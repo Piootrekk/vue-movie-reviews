@@ -1,3 +1,41 @@
+<script setup>
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiAccount, mdiMagnify } from "@mdi/js";
+import { ref, watch, computed, watchEffect } from "vue";
+import { useStore } from "vuex";
+import _debounce from "lodash/debounce";
+import DropList from "@/components/DropList.vue";
+import { headerLoggedItems, headerNotLoggedItems } from "@/utils/utils.js";
+
+const store = useStore();
+const path = mdiAccount;
+const pathMagnify = mdiMagnify;
+const isOpen = ref(false);
+const searchTerm = ref("");
+const isUserAuthenticated = computed(
+  () => store.getters["firebaseAuthModule/isAuthenticated"]
+);
+const itemIconMapper = ref(headerNotLoggedItems);
+
+watchEffect(() => {
+  itemIconMapper.value = isUserAuthenticated.value
+    ? headerLoggedItems
+    : headerNotLoggedItems;
+});
+
+const debouncedUpdateSearchTerm = _debounce((newVal) => {
+  store.dispatch("searchBarModule/updateSearchTerm", newVal);
+}, 800);
+
+watch(searchTerm, (newVal) => {
+  debouncedUpdateSearchTerm(newVal);
+});
+
+const handleClose = () => {
+  isOpen.value = false;
+};
+</script>
+
 <template>
   <div class="flex justify-center items-center">
     <div class="relative">
@@ -28,65 +66,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiAccount, mdiMagnify } from "@mdi/js";
-import { ref, watch, computed, watchEffect } from "vue";
-import { useStore } from "vuex";
-import _debounce from "lodash/debounce";
-import DropList from "@/components/DropList.vue";
-import { headerLoggedItems, headerNotLoggedItems } from "@/utils/utils.js";
-
-export default {
-  components: {
-    SvgIcon,
-    DropList,
-  },
-  name: "HeaderSearch",
-  setup() {
-    const store = useStore();
-    const path = mdiAccount;
-    const pathMagnify = mdiMagnify;
-    const isOpen = ref(false);
-    const searchTerm = ref("");
-    const isUserAuthenticated = computed(
-      () => store.getters["firebaseAuthModule/isAuthenticated"]
-    );
-    const itemIconMapper = ref(headerNotLoggedItems);
-
-    watchEffect(() => {
-      itemIconMapper.value = isUserAuthenticated.value
-        ? headerLoggedItems
-        : headerNotLoggedItems;
-    });
-
-    const debouncedUpdateSearchTerm = _debounce((newVal) => {
-      store.dispatch("searchBarModule/updateSearchTerm", newVal);
-    }, 800);
-
-    watch(searchTerm, (newVal) => {
-      debouncedUpdateSearchTerm(newVal);
-    });
-
-    const handleClose = () => {
-      isOpen.value = false;
-    };
-
-    const isAuthenticated = computed(
-      () => store.getters["firebaseModule/isAuthenticated"]
-    );
-
-    return {
-      path,
-      pathMagnify,
-      isOpen,
-      searchTerm,
-      handleClose,
-      isUserAuthenticated,
-      itemIconMapper,
-      isAuthenticated,
-    };
-  },
-};
-</script>

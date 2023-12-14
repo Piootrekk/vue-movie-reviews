@@ -1,3 +1,31 @@
+<script setup>
+import SvgIcon from "@jamescoyle/vue-icon";
+import { defineEmits, defineProps } from "vue";
+
+defineProps({
+  itemIconMap: Array,
+});
+
+const emit = defineEmits(["close"]);
+
+const onClickaway = () => {
+  emit("close");
+};
+
+const handleClickedItem = (item) => {
+  item.action();
+};
+</script>
+
+<script>
+import { mixin as clickaway } from "vue3-click-away";
+
+export default {
+  name: "DropList",
+  mixins: [clickaway],
+};
+</script>
+
 <template>
   <div
     class="absolute shadow-lg rounded-lg z-10 mt-4 top-8 right-6 bg-gray-900 border border-gray-700"
@@ -22,29 +50,3 @@
     </ul>
   </div>
 </template>
-
-<script>
-import { mixin as clickaway } from "vue3-click-away";
-import SvgIcon from "@jamescoyle/vue-icon";
-
-export default {
-  name: "DropList",
-  mixins: [clickaway],
-  components: {
-    SvgIcon,
-  },
-  props: {
-    itemIconMap: Array,
-  },
-  setup(props, { emit }) {
-    const onClickaway = () => {
-      emit("close");
-    };
-    const handleClickedItem = (item) => {
-      item.action();
-    };
-
-    return { onClickaway, handleClickedItem };
-  },
-};
-</script>

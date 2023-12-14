@@ -1,3 +1,45 @@
+<script setup>
+import { useStore } from "vuex";
+import router from "@/router";
+import CustomInput from "@/components/CustomInput.vue";
+import CustomButton from "@/components/CustomButton.vue";
+import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
+import { ref } from "vue";
+
+const store = useStore();
+
+const formInputs = ref({
+  email: {
+    label: "Email",
+    type: "text",
+    autocomplete: "email",
+  },
+  password: {
+    label: "Password",
+    type: "password",
+    autocomplete: "password",
+  },
+});
+
+const isLoading = ref(false);
+const errorMessage = ref("");
+
+const login = async () => {
+  try {
+    isLoading.value = true;
+    await store.dispatch("firebaseAuthModule/login", {
+      email: formInputs.value.email.value,
+      password: formInputs.value.password.value,
+    });
+    router.push("/");
+  } catch (error) {
+    errorMessage.value = error.message;
+  } finally {
+    isLoading.value = false;
+  }
+};
+</script>
+
 <template>
   <div class="flex justify-center items-center h-screen">
     <form
@@ -28,62 +70,3 @@
     </form>
   </div>
 </template>
-
-<script>
-import { useStore } from "vuex";
-import router from "@/router";
-import CustomInput from "@/components/CustomInput.vue";
-import CustomButton from "@/components/CustomButton.vue";
-import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
-import { ref } from "vue";
-
-export default {
-  name: "LoginPage",
-  components: {
-    CustomInput,
-    CustomButton,
-    HomeAboutLinks,
-  },
-  setup() {
-    const store = useStore();
-
-    const formInputs = ref({
-      email: {
-        label: "Email",
-        type: "text",
-        autocomplete: "email",
-      },
-      password: {
-        label: "Password",
-        type: "password",
-        autocomplete: "password",
-      },
-    });
-
-    const isLoading = ref(false);
-    const errorMessage = ref("");
-
-    const login = async () => {
-      try {
-        isLoading.value = true;
-        await store.dispatch("firebaseAuthModule/login", {
-          email: formInputs.value.email.value,
-          password: formInputs.value.password.value,
-        });
-        router.push("/");
-      } catch (error) {
-        errorMessage.value = error.message;
-      } finally {
-        isLoading.value = false;
-      }
-    };
-
-    return {
-      formInputs,
-      isLoading,
-      errorMessage,
-      login,
-    };
-  },
-};
-</script>

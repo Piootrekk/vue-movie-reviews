@@ -1,3 +1,4 @@
+<script setup></script>
 <template>
   <ul class="flex justify-center mt-5">
     <router-link to="/" class="mx-5 hover:text-gray-400 cursor-pointer"
@@ -8,9 +9,3 @@
     >
   </ul>
 </template>
-
-<script>
-export default {
-  name: "HomeAboutLinks",
-};
-</script>

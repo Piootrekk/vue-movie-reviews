@@ -14,32 +14,26 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { Timestamp } from "firebase/firestore";
+import { defineProps } from "vue";
 
-export default {
-  name: "ReviewsSection",
-  components: {},
-  props: {
-    author: {
-      type: String,
-      required: true,
-    },
-    text: {
-      type: String,
-      required: true,
-    },
-    rate: {
-      type: Number,
-      default: 0,
-    },
-    date: {
-      type: Timestamp,
-      required: true,
-    },
+defineProps({
+  author: {
+    type: String,
+    required: true,
   },
-  setup() {
-    return {};
+  text: {
+    type: String,
+    required: true,
   },
-};
+  rate: {
+    type: Number,
+    default: 0,
+  },
+  date: {
+    type: Timestamp,
+    required: true,
+  },
+});
 </script>

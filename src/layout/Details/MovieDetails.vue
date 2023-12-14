@@ -1,3 +1,63 @@
+<script setup>
+import LoadingSpin from "@/components/LoadingSpin.vue";
+import CustomButton from "@/components/CustomButton.vue";
+import DetailsRate from "./DetailsRate.vue";
+import DetailsPlot from "./DetailsPlot.vue";
+import DetailsReview from "./DetailsReview.vue";
+import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
+
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const selectedComponent = ref("DetailsRate");
+
+const components = {
+  DetailsRate,
+  DetailsPlot,
+  DetailsReview,
+  NotAuthorizedView,
+};
+
+const detailsLabels = [
+  "Released",
+  "Runtime",
+  "Genre",
+  "Director",
+  "Writer",
+  "Actors",
+  "Language",
+  "Country",
+  "Awards",
+  "BoxOffice",
+];
+
+const movieDetails = computed(() => {
+  return store.getters["movieApiModule/selectedMovie"];
+});
+const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
+
+const isAuthenticated = computed(() => {
+  return store.getters["firebaseAuthModule/isAuthenticated"];
+});
+
+const RateClick = () => {
+  selectedComponent.value = "DetailsRate";
+};
+
+const PlotClick = () => {
+  selectedComponent.value = "DetailsPlot";
+};
+
+const ReviewsClick = () => {
+  if (isAuthenticated.value) {
+    selectedComponent.value = "DetailsReview";
+  } else {
+    selectedComponent.value = "NotAuthorizedView";
+  }
+};
+</script>
+
 <template>
   <div v-if="isLoading" class="mt-8 mx-auto container">
     <LoadingSpin />
@@ -56,83 +116,7 @@
       v-if="movieDetails !== null"
       :key="selectedComponent"
     >
-      <component :is="selectedComponent" :movie="movieDetails" />
+      <component :is="components[selectedComponent]" :movie="movieDetails" />
     </div>
   </div>
 </template>
-
-<script>
-import LoadingSpin from "@/components/LoadingSpin.vue";
-import CustomButton from "@/components/CustomButton.vue";
-import DetailsRate from "./DetailsRate.vue";
-import DetailsPlot from "./DetailsPlot.vue";
-import DetailsReview from "./DetailsReview.vue";
-import NotAuthorizedView from "@/views/NotAuthorizedView.vue";
-
-import { computed, ref } from "vue";
-import { useStore } from "vuex";
-
-export default {
-  name: "MovieDetails",
-  components: {
-    LoadingSpin,
-    CustomButton,
-    DetailsRate,
-    DetailsPlot,
-    DetailsReview,
-    NotAuthorizedView,
-  },
-  setup() {
-    const store = useStore();
-    const selectedComponent = ref("DetailsRate");
-
-    const detailsLabels = [
-      "Released",
-      "Runtime",
-      "Genre",
-      "Director",
-      "Writer",
-      "Actors",
-      "Language",
-      "Country",
-      "Awards",
-      "BoxOffice",
-    ];
-
-    const movieDetails = computed(() => {
-      return store.getters["movieApiModule/selectedMovie"];
-    });
-    const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
-
-    const isAuthenticated = computed(() => {
-      return store.getters["firebaseAuthModule/isAuthenticated"];
-    });
-
-    const RateClick = () => {
-      selectedComponent.value = "DetailsRate";
-    };
-
-    const PlotClick = () => {
-      selectedComponent.value = "DetailsPlot";
-    };
-
-    const ReviewsClick = () => {
-      if (isAuthenticated.value) {
-        selectedComponent.value = "DetailsReview";
-      } else {
-        selectedComponent.value = "NotAuthorizedView";
-      }
-    };
-
-    return {
-      movieDetails,
-      isLoading,
-      RateClick,
-      PlotClick,
-      ReviewsClick,
-      selectedComponent,
-      detailsLabels,
-    };
-  },
-};
-</script>

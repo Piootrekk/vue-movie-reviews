@@ -1,3 +1,84 @@
+<script setup>
+import { useStore } from "vuex";
+import router from "@/router";
+import CustomInput from "@/components/CustomInput.vue";
+import CustomButton from "@/components/CustomButton.vue";
+import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
+import { ref, computed } from "vue";
+
+const store = useStore();
+
+const formInputs = ref({
+  email: {
+    label: "Email",
+    errorMessage: "Email is not valid",
+    type: "text",
+    autocomplete: "email",
+    validate: validateEmail,
+  },
+  password: {
+    label: "Password",
+    errorMessage: "Password min 6 characters",
+    type: "password",
+    autocomplete: "password",
+    validate: validatePassword,
+  },
+  passwordConfirmation: {
+    label: "Confirm password",
+    errorMessage: "Passwords do not match",
+    type: "password",
+    autocomplete: "password",
+    validate: validatePasswordsMatch,
+  },
+});
+
+const isLoading = ref(false);
+const errorMessage = ref("");
+
+const AllValidations = ref({
+  email: false,
+  password: false,
+  passwordConfirmation: false,
+});
+
+function validateEmail(isValid) {
+  isValid.value = /\S+@\S+\.\S+/.test(formInputs.value.email.value);
+  AllValidations.value.email = isValid;
+}
+
+function validatePassword(isValid) {
+  isValid.value = formInputs.value.password.value.length >= 6;
+  AllValidations.value.password = isValid.value;
+}
+
+function validatePasswordsMatch(isValid) {
+  isValid.value =
+    formInputs.value.password.value ===
+    formInputs.value.passwordConfirmation.value;
+  AllValidations.value.passwordConfirmation = isValid.value;
+}
+
+const isRegisterButtonDisabled = computed(() => {
+  return Object.values(AllValidations.value).some((isValid) => !isValid);
+});
+
+async function register() {
+  try {
+    isLoading.value = true;
+    await store.dispatch("firebaseAuthModule/createUser", {
+      email: formInputs.value.email.value,
+      password: formInputs.value.password.value,
+    });
+    router.push("/");
+  } catch (error) {
+    console.error(error.message);
+    errorMessage.value = error.message;
+  } finally {
+    isLoading.value = false;
+  }
+}
+</script>
+
 <template>
   <div class="flex justify-center items-center h-screen">
     <form
@@ -30,102 +111,3 @@
     </form>
   </div>
 </template>
-
-<script>
-import { useStore } from "vuex";
-import router from "@/router";
-import CustomInput from "@/components/CustomInput.vue";
-import CustomButton from "@/components/CustomButton.vue";
-import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
-import { ref, computed } from "vue";
-
-export default {
-  name: "RegisterPage",
-  components: {
-    CustomInput,
-    CustomButton,
-    HomeAboutLinks,
-  },
-  setup() {
-    const store = useStore();
-
-    const formInputs = ref({
-      email: {
-        label: "Email",
-        errorMessage: "Email is not valid",
-        type: "text",
-        autocomplete: "email",
-        validate: validateEmail,
-      },
-      password: {
-        label: "Password",
-        errorMessage: "Password min 6 characters",
-        type: "password",
-        autocomplete: "password",
-        validate: validatePassword,
-      },
-      passwordConfirmation: {
-        label: "Confirm password",
-        errorMessage: "Passwords do not match",
-        type: "password",
-        autocomplete: "password",
-        validate: validatePasswordsMatch,
-      },
-    });
-
-    const isLoading = ref(false);
-    const errorMessage = ref("");
-
-    const AllValidations = ref({
-      email: false,
-      password: false,
-      passwordConfirmation: false,
-    });
-
-    function validateEmail(isValid) {
-      isValid.value = /\S+@\S+\.\S+/.test(formInputs.value.email.value);
-      AllValidations.value.email = isValid;
-    }
-
-    function validatePassword(isValid) {
-      isValid.value = formInputs.value.password.value.length >= 6;
-      AllValidations.value.password = isValid.value;
-    }
-
-    function validatePasswordsMatch(isValid) {
-      isValid.value =
-        formInputs.value.password.value ===
-        formInputs.value.passwordConfirmation.value;
-      AllValidations.value.passwordConfirmation = isValid.value;
-    }
-
-    const isRegisterButtonDisabled = computed(() => {
-      return Object.values(AllValidations.value).some((isValid) => !isValid);
-    });
-
-    async function register() {
-      try {
-        isLoading.value = true;
-        await store.dispatch("firebaseAuthModule/createUser", {
-          email: formInputs.value.email.value,
-          password: formInputs.value.password.value,
-        });
-        router.push("/");
-      } catch (error) {
-        console.error(error.message);
-        errorMessage.value = error.message;
-      } finally {
-        isLoading.value = false;
-      }
-    }
-
-    return {
-      formInputs,
-      isRegisterButtonDisabled,
-      isLoading,
-      errorMessage,
-      register,
-    };
-  },
-};
-</script>

@@ -1,3 +1,15 @@
+<script setup>
+import LoadingSpin from "@/components/LoadingSpin.vue";
+import { defineProps } from "vue";
+
+defineProps({
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
+});
+</script>
+
 <template>
   <div>
     <div v-if="isLoading" class="mt-8 mx-auto container">
@@ -12,19 +24,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import LoadingSpin from "@/components/LoadingSpin.vue";
-
-export default {
-  props: {
-    isLoading: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  components: {
-    LoadingSpin,
-  },
-};
-</script>
