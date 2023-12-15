@@ -31,7 +31,6 @@ export default {
       if (userCredential) {
         const user = userCredential.user;
         commit("setUser", user);
-        console.log("user created:", user);
       }
     },
     login: async ({ commit }, { email, password }) => {
@@ -43,28 +42,23 @@ export default {
       const user = userCredential.user;
       if (user) {
         commit("setUser", user);
-        console.log("user logged in:", user);
       }
     },
     logout: async ({ commit }) => {
       await signOut(auth);
       commit("setUser", null);
       localStorage.removeItem("user");
-      console.log("user logged out");
     },
     async checkAuthState({ commit }) {
       const userFromStorage = localStorage.getItem("user");
       if (userFromStorage) {
         const user = JSON.parse(userFromStorage);
-        console.log("user logged in from localStorage");
         commit("setUser", user);
       } else {
         auth.onAuthStateChanged((user) => {
           if (user) {
-            console.log("user logged in");
             commit("setUser", user);
           } else {
-            console.log("user not logged in");
             commit("setUser", null);
           }
         });

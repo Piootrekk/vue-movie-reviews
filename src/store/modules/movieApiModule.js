@@ -43,13 +43,11 @@ export default {
         const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();
-          console.log("Dane pobrane z API:");
           commit("setDisplayedMovies", data.Search);
         } else {
           console.error("Błąd podczas pobierania danych z API OMDB");
           apiKey =
             apiKey === apiKeys.API_KEY2 ? apiKeys.API_KEY1 : apiKeys.API_KEY3;
-          console.log("Zmiana klucza API na inny:", apiKey);
           await dispatch("fetchMovieData");
         }
       } catch (error) {
@@ -67,7 +65,6 @@ export default {
         const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();
-          console.log("Dane pobrane z API (detale filmu):", data);
           commit("setSelectedMovie", data);
         } else {
           console.error(

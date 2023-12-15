@@ -5,7 +5,7 @@ import ReviewsSection from "./ReviewsSection.vue";
 import LoadingSpin from "@/components/LoadingSpin.vue";
 import { mdiNoteEdit, mdiTrashCan, mdiCheckBold } from "@mdi/js";
 import { useStore } from "vuex";
-import { computed, ref, defineProps } from "vue";
+import { computed, ref, defineProps, onMounted } from "vue";
 
 const props = defineProps({
   movie: {
@@ -24,7 +24,7 @@ const isAuthenticated = computed(
   () => store.getters["firebaseAuthModule/isAuthenticated"]
 );
 const reviews = computed(
-  () => store.getters["firebaseDatabaseModule/getReviews"]
+  () => store.getters["firebaseDatabaseModule/getReviewsOrderedByDate"]
 );
 
 const isEdit = ref([false]);
@@ -38,21 +38,21 @@ const AddData = async () => {
     rating: 0,
     comment: inputRef.value,
   };
-  await store.dispatch("firebaseDatabaseModule/addReview", {
+  await store.dispatch("firebaseDatabaseModule/addDocument", {
     data: docTOSend,
     collectionName: "Reviews",
   });
 };
 
 const ShowReviews = async () => {
-  await store.dispatch("firebaseDatabaseModule/getReviewsByMovieId", {
+  await store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
     collectionName: "Reviews",
     movieId: props.movie.imdbID,
   });
 };
 
 const DelReviews = async (id) => {
-  await store.dispatch("firebaseDatabaseModule/deleteReview", {
+  await store.dispatch("firebaseDatabaseModule/deleteDocument", {
     collectionName: "Reviews",
     reviewId: id,
   });
@@ -61,7 +61,7 @@ const DelReviews = async (id) => {
 };
 
 const EditReviews = async (id) => {
-  await store.dispatch("firebaseDatabaseModule/updateReview", {
+  await store.dispatch("firebaseDatabaseModule/updateDocument", {
     collectionName: "Reviews",
     reviewId: id,
     newComment: editModel.value,
@@ -73,8 +73,14 @@ const EditReviews = async (id) => {
 const isUsersReview = (review) => {
   return review.id_user === user.value.uid;
 };
-</script>
 
+onMounted(() => {
+  store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
+    collectionName: "Reviews",
+    movieId: props.movie.imdbID,
+  });
+});
+</script>
 
 <template>
   <h1 class="text-3xl text-center mb-8">Your reviews</h1>
@@ -94,7 +100,7 @@ const isUsersReview = (review) => {
   </div>
   <h1 class="text-3xl text-center mb-8">Other reviews</h1>
   <div class="flex justify-center">
-    <CustomButton class="w-1/5" label="Show" :handleClick="ShowReviews" />
+    <CustomButton class="w-1/5" label="Refresh" :handleClick="ShowReviews" />
   </div>
   <LoadingSpin v-if="isLoading" class="mt-11" />
   <div
