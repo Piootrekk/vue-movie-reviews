@@ -82,7 +82,7 @@ export default {
         commit("setIsLoading", true);
         const q = query(
           collection(db, collectionName),
-          where("movieId", "==", movieId)
+          where("movieId", "in", movieId)
         );
         const querySnapshot = await getDocs(q);
         const reviews = [];
@@ -154,6 +154,7 @@ export default {
       }
     },
     async setReviewsStateToEmpty({ commit }) {
+      console.log("setReviewsStateToEmpty");
       commit("setReviews", []);
     },
   },

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch, onMounted } from "vue";
+import { computed, watch, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 import MainMovie from "./MainMovie.vue";
 import BodyWrapper from "../StyleWrappers/BodyWrapper.vue";
@@ -15,14 +15,34 @@ const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
 const displayedMovies = computed(
   () => store.getters["movieApiModule/displayedMovies"]
 );
+const storedData = computed(
+  () => store.getters["localStorageModule/getmovieData"]
+);
 
 onMounted(() => {
   store.dispatch("localStorageModule/initializeLocalStorage", {
     key: "movieData",
   });
-  const storedData = store.getters["localStorageModule/getmovieData"];
-  if (storedData) {
-    store.commit("movieApiModule/setDisplayedMovies", storedData);
+
+  if (storedData.value) {
+    store.commit("movieApiModule/setDisplayedMovies", storedData.value);
+  }
+  const movieIds = storedData.value.map((movie) => movie.imdbID);
+
+  store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
+    collectionName: "MovieFollows",
+    movieId: movieIds,
+  });
+});
+
+watchEffect(() => {
+  if (storedData.value) {
+    store.dispatch("firebaseDatabaseModule/setReviewsStateToEmpty");
+    const movieIds = storedData.value.map((movie) => movie.imdbID);
+    store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
+      collectionName: "MovieFollows",
+      movieId: movieIds,
+    });
   }
 });
 

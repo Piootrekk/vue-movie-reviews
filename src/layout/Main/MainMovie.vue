@@ -1,7 +1,8 @@
 <script setup>
-import { ref, defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, computed, ref, watch } from "vue";
+import { useStore } from "vuex";
 
-defineProps({
+const props = defineProps({
   link: String,
   title: String,
   year: String,
@@ -9,10 +10,39 @@ defineProps({
 });
 
 const emit = defineEmits(["my-event"]);
+const store = useStore();
 
-const follow = ref(true);
+const getFollows = computed(
+  () => store.getters["firebaseDatabaseModule/getReviews"]
+);
+
+watch(
+  () => store.getters["firebaseDatabaseModule/getReviews"],
+  () => {
+    const getFollowsList = getFollows.value.map((follow) => follow.movieId);
+    isfollowing.value = getFollowsList.includes(props.id);
+  }
+);
+
+const isfollowing = ref(false);
+
 const ButtonClick = () => {
-  emit("my-event", follow);
+  if (isfollowing.value) {
+    store.dispatch("firebaseDatabaseModule/deleteDocument", {
+      collectionName: "MovieFollows",
+      reviewId: props.id,
+    });
+  } else {
+    let docTOSend = {
+      movieId: props.id,
+      id_user: store.getters["firebaseAuthModule/getUser"].uid,
+    };
+    store.dispatch("firebaseDatabaseModule/addDocument", {
+      data: docTOSend,
+      collectionName: "MovieFollows",
+    });
+  }
+  emit("my-event", isfollowing);
 };
 </script>
 
@@ -32,9 +62,9 @@ const ButtonClick = () => {
     <button
       @click.prevent="ButtonClick"
       class="w-24 mt-auto px-2 py-2 text-white rounded-full focus:outline-none"
-      :class="follow ? 'bg-blue-500' : 'bg-red-500'"
+      :class="!isfollowing ? 'bg-blue-500' : 'bg-red-500'"
     >
-      {{ follow ? "Follow" : "Unfollow" }}
+      {{ !isfollowing ? "Follow" : "Unfollow" }}
     </button>
   </router-link>
 </template>

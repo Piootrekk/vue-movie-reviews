@@ -30,9 +30,6 @@ export default {
     async fetchMovieData({ commit, dispatch, rootState }) {
       commit("setLoading", true);
 
-      // Wait 0.2 sec for loading animation {TEST}
-      await new Promise((resolve) => setTimeout(resolve, 200));
-
       let searchTerm = rootState.searchBarModule.searchTerm;
       let pages = 1;
       let type = rootState.popularModule.isPopular.movie ? "movie" : "series";

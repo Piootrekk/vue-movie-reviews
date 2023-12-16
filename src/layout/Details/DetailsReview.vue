@@ -47,7 +47,7 @@ const AddData = async () => {
 const ShowReviews = async () => {
   await store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
     collectionName: "Reviews",
-    movieId: props.movie.imdbID,
+    movieId: [props.movie.imdbID],
   });
 };
 
@@ -77,7 +77,7 @@ const isUsersReview = (review) => {
 onMounted(() => {
   store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
     collectionName: "Reviews",
-    movieId: props.movie.imdbID,
+    movieId: [props.movie.imdbID],
   });
 });
 </script>
