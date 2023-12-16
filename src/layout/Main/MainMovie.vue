@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits, computed, ref, watch } from "vue";
+import { defineProps, defineEmits, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 
 const props = defineProps({
@@ -7,43 +7,54 @@ const props = defineProps({
   title: String,
   year: String,
   id: String,
+  followHandler: Function,
 });
 
-const emit = defineEmits(["my-event"]);
+const emit = defineEmits(["feedBackFollow"]);
 const store = useStore();
-
-const getFollows = computed(
-  () => store.getters["firebaseDatabaseModule/getReviews"]
-);
-
-watch(
-  () => store.getters["firebaseDatabaseModule/getReviews"],
-  () => {
-    const getFollowsList = getFollows.value.map((follow) => follow.movieId);
-    isfollowing.value = getFollowsList.includes(props.id);
-  }
-);
 
 const isfollowing = ref(false);
 
-const ButtonClick = () => {
-  if (isfollowing.value) {
-    store.dispatch("firebaseDatabaseModule/deleteDocument", {
-      collectionName: "MovieFollows",
-      reviewId: props.id,
-    });
-  } else {
-    let docTOSend = {
-      movieId: props.id,
-      id_user: store.getters["firebaseAuthModule/getUser"].uid,
-    };
-    store.dispatch("firebaseDatabaseModule/addDocument", {
-      data: docTOSend,
-      collectionName: "MovieFollows",
-    });
+watchEffect(() => {
+  if (store.getters["firebaseDatabaseModule/getReviews"]) {
+    const getFollowsList = store.getters[
+      "firebaseDatabaseModule/getReviews"
+    ].map((follow) => follow.movieId);
+    isfollowing.value = getFollowsList.includes(props.id);
   }
-  emit("my-event", isfollowing);
+});
+
+const ClickHandler = () => {
+  emit("feedBackFollow", isfollowing);
+  props.followHandler();
 };
+
+//   console.log(getFollowsMovies);
+//   isfollowing.value = getFollowsMovies.includes(props.id);
+
+//   if (isfollowing.value) {
+//     const foundReview = store.getters["firebaseDatabaseModule/getReviews"].find(
+//       (review) => review.movieId === props.id
+//     );
+//     store.dispatch("firebaseDatabaseModule/deleteDocument", {
+//       collectionName: "MovieFollows",
+//       reviewId: foundReview.id,
+//     });
+//   } else {
+//     if (getFollowsMovies.some((follow) => follow.movieId === props.id))
+//       return console.error("Already following");
+//     let docTOSend = {
+//       movieId: props.id,
+//       id_user: store.getters["firebaseAuthModule/getUser"].uid,
+//     };
+//     store.dispatch("firebaseDatabaseModule/addDocument", {
+//       data: docTOSend,
+//       collectionName: "MovieFollows",
+//     });
+//   }
+
+//   getFollowsMovies = [];
+// };
 </script>
 
 <template>
@@ -60,7 +71,7 @@ const ButtonClick = () => {
     <h3 class="font-bold text-center mx-1">{{ year }}</h3>
     <br />
     <button
-      @click.prevent="ButtonClick"
+      @click.prevent="ClickHandler"
       class="w-24 mt-auto px-2 py-2 text-white rounded-full focus:outline-none"
       :class="!isfollowing ? 'bg-blue-500' : 'bg-red-500'"
     >

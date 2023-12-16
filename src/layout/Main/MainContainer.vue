@@ -1,16 +1,12 @@
 <script setup>
-import { computed, watch, onMounted, watchEffect } from "vue";
+import { computed, watch, onMounted, watchEffect, ref } from "vue";
 import { useStore } from "vuex";
 import MainMovie from "./MainMovie.vue";
 import BodyWrapper from "../StyleWrappers/BodyWrapper.vue";
 import NotFoundWrapper from "../StyleWrappers/NotFoundWrapper.vue";
 
 const store = useStore();
-
-const onFollow = (flw) => {
-  flw.value = !flw.value;
-};
-
+const follow = ref(false);
 const isLoading = computed(() => store.getters["movieApiModule/isLoading"]);
 const displayedMovies = computed(
   () => store.getters["movieApiModule/displayedMovies"]
@@ -67,6 +63,46 @@ watch(
     }
   }
 );
+
+const foundReview = computed(
+  () => store.getters["firebaseDatabaseModule/getReviews"]
+);
+
+const feedBackHandler = (isfollowing) => {
+  follow.value = isfollowing.value;
+  console.log("1", isfollowing.value);
+  console.log("2", follow.value);
+};
+
+const followHandler = (movieId) => {
+  const getFollowsMovies = [];
+  getFollowsMovies.push(...foundReview.value.map((follow) => follow.movieId));
+  if (follow.value) {
+    DelFollow(movieId);
+  } else AddFollow(movieId);
+  console.log(getFollowsMovies);
+};
+
+const AddFollow = async (movieId) => {
+  let docTOSend = {
+    movieId: movieId,
+    id_user: store.getters["firebaseAuthModule/getUser"].uid,
+  };
+  await store.dispatch("firebaseDatabaseModule/addDocument", {
+    data: docTOSend,
+    collectionName: "MovieFollows",
+  });
+};
+
+const DelFollow = async (movieId) => {
+  const foundSameReview = foundReview.value.find(
+    (review) => review.movieId === movieId
+  );
+  await store.dispatch("firebaseDatabaseModule/deleteDocument", {
+    collectionName: "MovieFollows",
+    reviewId: foundSameReview.id,
+  });
+};
 </script>
 
 <template>
@@ -86,7 +122,8 @@ watch(
           :title="movie.Title"
           :year="movie.Year"
           :id="movie.imdbID"
-          @my-event="onFollow"
+          @feedBackFollow="feedBackHandler"
+          :followHandler="() => followHandler(movie.imdbID)"
         />
       </template>
     </BodyWrapper>
