@@ -16,11 +16,12 @@ const store = useStore();
 const isfollowing = ref(false);
 
 watchEffect(() => {
-  if (store.getters["firebaseDatabaseModule/getReviews"]) {
-    const getFollowsList = store.getters[
-      "firebaseDatabaseModule/getReviews"
-    ].map((follow) => follow.movieId);
-    isfollowing.value = getFollowsList.includes(props.id);
+  const reviews = store.getters["firebaseDatabaseModule/getReviews"];
+
+  if (reviews && Array.isArray(reviews)) {
+    const setFollowsList = reviews.map((follow) => follow.movieId);
+
+    isfollowing.value = setFollowsList.includes(props.id);
   }
 });
 
@@ -28,33 +29,6 @@ const ClickHandler = () => {
   emit("feedBackFollow", isfollowing);
   props.followHandler();
 };
-
-//   console.log(getFollowsMovies);
-//   isfollowing.value = getFollowsMovies.includes(props.id);
-
-//   if (isfollowing.value) {
-//     const foundReview = store.getters["firebaseDatabaseModule/getReviews"].find(
-//       (review) => review.movieId === props.id
-//     );
-//     store.dispatch("firebaseDatabaseModule/deleteDocument", {
-//       collectionName: "MovieFollows",
-//       reviewId: foundReview.id,
-//     });
-//   } else {
-//     if (getFollowsMovies.some((follow) => follow.movieId === props.id))
-//       return console.error("Already following");
-//     let docTOSend = {
-//       movieId: props.id,
-//       id_user: store.getters["firebaseAuthModule/getUser"].uid,
-//     };
-//     store.dispatch("firebaseDatabaseModule/addDocument", {
-//       data: docTOSend,
-//       collectionName: "MovieFollows",
-//     });
-//   }
-
-//   getFollowsMovies = [];
-// };
 </script>
 
 <template>
@@ -71,6 +45,7 @@ const ClickHandler = () => {
     <h3 class="font-bold text-center mx-1">{{ year }}</h3>
     <br />
     <button
+      v-if="store.getters['firebaseAuthModule/isAuthenticated']"
       @click.prevent="ClickHandler"
       class="w-24 mt-auto px-2 py-2 text-white rounded-full focus:outline-none"
       :class="!isfollowing ? 'bg-blue-500' : 'bg-red-500'"

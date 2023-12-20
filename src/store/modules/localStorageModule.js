@@ -2,7 +2,7 @@
 export default {
   namespaced: true,
   state: {
-    movieData: null,
+    movieData: [],
   },
   getters: {
     getmovieData: (state) => state.movieData,
@@ -32,6 +32,5 @@ export default {
       localStorage.setItem(key, JSON.stringify(item));
       commit("updatemovieData", { newData: data, key });
     },
-    
   },
 };

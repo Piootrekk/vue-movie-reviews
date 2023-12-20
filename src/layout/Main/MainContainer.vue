@@ -15,6 +15,14 @@ const storedData = computed(
   () => store.getters["localStorageModule/getmovieData"]
 );
 
+const getIds = () => {
+  const movieIds = storedData.value.map((movie) => movie.imdbID);
+  store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
+    collectionName: "MovieFollows",
+    movieId: movieIds,
+  });
+};
+
 onMounted(() => {
   store.dispatch("localStorageModule/initializeLocalStorage", {
     key: "movieData",
@@ -23,22 +31,13 @@ onMounted(() => {
   if (storedData.value) {
     store.commit("movieApiModule/setDisplayedMovies", storedData.value);
   }
-  const movieIds = storedData.value.map((movie) => movie.imdbID);
-
-  store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
-    collectionName: "MovieFollows",
-    movieId: movieIds,
-  });
+  getIds();
 });
 
 watchEffect(() => {
   if (storedData.value) {
     store.dispatch("firebaseDatabaseModule/setReviewsStateToEmpty");
-    const movieIds = storedData.value.map((movie) => movie.imdbID);
-    store.dispatch("firebaseDatabaseModule/getDocumentByMovieId", {
-      collectionName: "MovieFollows",
-      movieId: movieIds,
-    });
+    getIds();
   }
 });
 
@@ -70,8 +69,6 @@ const foundReview = computed(
 
 const feedBackHandler = (isfollowing) => {
   follow.value = isfollowing.value;
-  console.log("1", isfollowing.value);
-  console.log("2", follow.value);
 };
 
 const followHandler = (movieId) => {

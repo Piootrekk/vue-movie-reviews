@@ -80,16 +80,18 @@ export default {
     async getDocumentByMovieId({ commit }, { collectionName, movieId }) {
       try {
         commit("setIsLoading", true);
-        const q = query(
-          collection(db, collectionName),
-          where("movieId", "in", movieId)
-        );
-        const querySnapshot = await getDocs(q);
-        const reviews = [];
-        querySnapshot.forEach((doc) => {
-          reviews.push({ id: doc.id, ...doc.data() });
-        });
-        commit("setReviews", reviews);
+        if (movieId.length > 0) {
+          const q = query(
+            collection(db, collectionName),
+            where("movieId", "in", movieId)
+          );
+          const querySnapshot = await getDocs(q);
+          const reviews = [];
+          querySnapshot.forEach((doc) => {
+            reviews.push({ id: doc.id, ...doc.data() });
+          });
+          commit("setReviews", reviews);
+        }
       } catch (error) {
         console.error("Error getting reviews:", error);
       } finally {
@@ -154,7 +156,6 @@ export default {
       }
     },
     async setReviewsStateToEmpty({ commit }) {
-      console.log("setReviewsStateToEmpty");
       commit("setReviews", []);
     },
   },
