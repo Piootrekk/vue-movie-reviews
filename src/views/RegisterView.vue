@@ -69,6 +69,11 @@ async function register() {
       email: formInputs.value.email.value,
       password: formInputs.value.password.value,
     });
+    store.dispatch("alertModule/displaySnackBar", {
+      type: "success",
+      title: "Authorization",
+      content: "Register in successfully",
+    });
     router.push("/");
   } catch (error) {
     console.error(error.message);

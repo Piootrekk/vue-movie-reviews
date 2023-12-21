@@ -5,7 +5,6 @@ import CustomInput from "@/components/CustomInput.vue";
 import CustomButton from "@/components/CustomButton.vue";
 import HomeAboutLinks from "@/components/HomeAboutLinks.vue";
 import { ref } from "vue";
-
 const store = useStore();
 
 const formInputs = ref({
@@ -30,6 +29,11 @@ const login = async () => {
     await store.dispatch("firebaseAuthModule/login", {
       email: formInputs.value.email.value,
       password: formInputs.value.password.value,
+    });
+    store.dispatch("alertModule/displaySnackBar", {
+      type: "success",
+      title: "Authorization",
+      content: "Logged in successfully",
     });
     router.push("/");
   } catch (error) {

@@ -5,6 +5,7 @@ import searchBarModule from "./modules/searchBarModule";
 import localStorageModule from "./modules/localStorageModule";
 import firebaseAuthModule from "./modules/firebaseAuthModule";
 import firebaseDatabaseModule from "./modules/firebaseDatabaseModule";
+import alertModule from "./modules/alertModule";
 
 export default createStore({
   modules: {
@@ -14,5 +15,6 @@ export default createStore({
     localStorageModule,
     firebaseAuthModule,
     firebaseDatabaseModule,
+    alertModule,
   },
 });

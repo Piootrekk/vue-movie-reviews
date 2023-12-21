@@ -1,6 +1,9 @@
 <script setup>
 import BodyWrapper from "@/layout/StyleWrappers/BodyWrapper.vue";
 import Header from "@/layout/Header/Header.vue";
+
+
+
 </script>
 
 <template>
