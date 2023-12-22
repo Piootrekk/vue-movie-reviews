@@ -70,11 +70,11 @@ async function register() {
       password: formInputs.value.password.value,
     });
     store.dispatch("alertModule/displaySnackBar", {
-      type: "success",
-      title: "Authorization",
-      content: "Register in successfully",
+      type: "info",
+      title: "Verify email",
+      content: "Please verify your email address",
     });
-    router.push("/");
+    router.push("/login");
   } catch (error) {
     console.error(error.message);
     errorMessage.value = error.message;

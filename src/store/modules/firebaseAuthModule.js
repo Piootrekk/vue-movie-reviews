@@ -3,6 +3,7 @@ import { auth } from "@/firebase/config.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification,
   signOut,
 } from "firebase/auth";
 
@@ -14,6 +15,7 @@ export default {
   getters: {
     getUser: (state) => state.user,
     isAuthenticated: (state) => state.user !== null,
+    isConfirmed: (state) => state.user !== null && state.user.emailVerified,
   },
   mutations: {
     setUser: (state, user) => {
@@ -30,6 +32,7 @@ export default {
       );
       if (userCredential) {
         const user = userCredential.user;
+        await sendEmailVerification(user);
         commit("setUser", user);
       }
     },
@@ -40,8 +43,12 @@ export default {
         password
       );
       const user = userCredential.user;
-      if (user) {
+      if (user && user.emailVerified) {
         commit("setUser", user);
+      } else {
+        const error = new Error("Email verification required.");
+        error.name = "AuthError";
+        throw error;
       }
     },
     logout: async ({ commit }) => {

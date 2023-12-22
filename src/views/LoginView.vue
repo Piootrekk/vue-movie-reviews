@@ -37,7 +37,16 @@ const login = async () => {
     });
     router.push("/");
   } catch (error) {
-    errorMessage.value = error.message;
+    if (error.name === "AuthError") {
+      store.dispatch("alertModule/displaySnackBar", {
+        type: "error",
+        title: "Verification",
+        content: "Please verify your email address!",
+      });
+    } else {
+      errorMessage.value = error.message;
+      console.error(error.message);
+    }
   } finally {
     isLoading.value = false;
   }

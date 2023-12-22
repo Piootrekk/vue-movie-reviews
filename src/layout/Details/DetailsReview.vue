@@ -43,6 +43,12 @@ const AddData = async () => {
     data: docTOSend,
     collectionName: "Reviews",
   });
+  store.dispatch("alertModule/displaySnackBar", {
+    type: "success",
+    title: "Review",
+    content: "Review added successfully!",
+  });
+  inputRef.value = "";
 };
 
 const ShowReviews = async () => {
@@ -57,6 +63,11 @@ const DelReviews = async (id) => {
     collectionName: "Reviews",
     reviewId: id,
   });
+  store.dispatch("alertModule/displaySnackBar", {
+    type: "success",
+    title: "Review",
+    content: "Review deleted successfully!",
+  });
   isEdit.value = [false];
   editModel.value = "";
 };
@@ -66,6 +77,12 @@ const EditReviews = async (id) => {
     collectionName: "Reviews",
     reviewId: id,
     newComment: editModel.value,
+  });
+
+  store.dispatch("alertModule/displaySnackBar", {
+    type: "success",
+    title: "Review",
+    content: "Review edited successfully!",
   });
   isEdit.value = [false];
   editModel.value = "";
